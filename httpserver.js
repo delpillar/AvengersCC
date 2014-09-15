@@ -1,7 +1,5 @@
 var http = require('http');
 var url = require('url');
-//var fs = require('fs');
-//var page = 'index.html';
 var port = 80;
 
 var server = http.createServer(function (request, response)
