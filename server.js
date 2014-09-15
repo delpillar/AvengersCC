@@ -13,30 +13,28 @@ var connectionStatus = false;
 var server = http.createServer(function (request, response)
 {
     try {
-	//while the server is running, goto the localhost (127.0.0.1) in your browser to display the message below
+		//info should be pulled from a file
+		var connectionString = 'mysql://' + userName + ':' + pw + '@'+ hostName + '/' + db;
+		var connection = mysql.createConnection(connectionString);
+		
+		connection.connect(function(err) {
+		   if(err) {
+			  console.log(getCurrentTime() + 'Failed to connect to db');
+		   } else {	
+			  console.log(getCurrentTime() + 'Connected to db');
+		   }
+		});
 
-	//info should be pulled from a file
-	var connectionString = 'mysql://' + userName + ':' + pw + '@'+ hostName + '/' + db;
-	var connection = mysql.createConnection(connectionString);
-	
-	connection.connect(function(err) {
-	   if(err) {
-		  console.log(getCurrentTime() + 'Failed to connect to db');
-	   } else {	
-		  console.log(getCurrentTime() + 'Connected to db');
-	   }
-	});
+		var diceRoll = Math.floor((Math.random() * 6) + 1); 
+		var testResult  = { number: diceRoll };
+		dbInsert(connection, 'test', testResult);
+		dbSelect(connection, 'test');	
+		console.log();
 
-	var diceRoll = Math.floor((Math.random() * 6) + 1); 
-	var testResult  = { number: diceRoll };
-	dbInsert(connection, 'test', testResult);
-	dbSelect(connection, 'test');	
-	console.log();
+		connection.end(function(err){
+		// Do something after the connection is gracefully terminated.
 
-	connection.end(function(err){
-	// Do something after the connection is gracefully terminated.
-
-	});
+		});
     } 
     catch (e) {
         response.writeHead(500, { 'content-type': 'text/plain' });
@@ -47,7 +45,8 @@ var server = http.createServer(function (request, response)
 });
 server.listen(port);
 
-console.log(getCurrentTime() + 'The server is operating on port ' + port + '\n')
+console.log('\033[2J');
+console.log(getCurrentTime() + 'The server is operating on port ' + port)
 
 function dbInsert(db, table) {
     //var i;
