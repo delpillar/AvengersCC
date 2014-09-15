@@ -31,6 +31,7 @@ var server = http.createServer(function (request, response)
 	var testResult  = { number: diceRoll };
 	dbInsert(connection, 'test', testResult);
 	dbSelect(connection, 'test');	
+	console.log();
 
 	connection.end(function(err){
 	// Do something after the connection is gracefully terminated.
@@ -61,7 +62,7 @@ function dbInsert(db, table) {
 		});
     }
 }
-
+//git@altssh.bitbucket.org:443/avengerscc/assemble.git
 function dbSelect(db, table) {
 	var queryString = 'SELECT ';	
     if(arguments.length > 2) {
@@ -83,7 +84,6 @@ function dbSelect(db, table) {
   	   } else {
 	  		console.log(query.sql); 
   	    	console.log(rows);
-  	    	console.log();
   	   }
 	});
 }
