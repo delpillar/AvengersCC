@@ -11,13 +11,13 @@ var server = http.createServer(function (request, response){
 		response.writeHead(200, {"Content-Type": "text/plain"});
 		var req = checkURL(request); 	//Passes request into the checkURL function and stores output into the req variable
 		var resp;
-		if(req == "Aaron"){				
+		if(req === "Aaron"){				
 			resp = "Gavendo";			
 		}
-		else if(req == "Monty"){			
+		else if(req === "Monty"){			
 			resp = "python";			
 		}
-		else if(req == "Hello"){			
+		else if(req === "Hello"){			
 			resp = "World";				
 		}
 		else{	
