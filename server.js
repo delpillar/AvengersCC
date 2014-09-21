@@ -1,7 +1,7 @@
 var http = require('http');
 var url = require('url');
 var mysql =  require('mysql');
-var port = 8080;
+var port = 8000;
 
 var hostName = '127.0.0.1:4040';
 var userName = 'root';
@@ -27,8 +27,22 @@ var server = http.createServer(function (request, response)
 
 		var diceRoll = Math.floor((Math.random() * 6) + 1); 
 		var testResult  = { number: diceRoll };
-		dbInsert(connection, 'test', testResult);
+
+		var currentId = 50;
+		var tempEntry  = { idTest: currentId, number: diceRoll };
+
+		dbInsert(connection, 'test', testResult, tempEntry);
 		dbSelect(connection, 'test');	
+
+		var newNumber = 13;
+		var updateItem = [ { number: newNumber }, { idTest: currentId } ];
+		dbUpdate(connection, 'test', updateItem);
+		dbSelect(connection, 'test');	
+		
+		var deleteEntry  = { idTest:  currentId};
+		dbDelete(connection, 'test', deleteEntry);
+		dbSelect(connection, 'test');	
+
 		console.log();
 
 		connection.end(function(err){
@@ -48,20 +62,45 @@ server.listen(port);
 console.log('\033[2J');
 console.log(getCurrentTime() + 'The server is operating on port ' + port)
 
-function dbInsert(db, table) {
-    //var i;
+function dbUpdate(db, table) {
     for (var i = 2; i < arguments.length; i++) {
-		var queryString = 'INSERT INTO ' + table + ' SET ?'
+		var queryString = 'UPDATE ' + table + ' SET ? WHERE ?';
 		var query = db.query(queryString, arguments[i], function(err, result) {
    			if(err) {
-	  			console.log(getCurrentTime() + ' Failed to add value to db');
+	  			console.log(getCurrentTime() + 'Failed to update value in db');
    			} else {	
 	      		console.log(query.sql); 
    			}
 		});
     }
 }
-//git@altssh.bitbucket.org:443/avengerscc/assemble.git
+
+function dbDelete(db, table) {
+    for (var i = 2; i < arguments.length; i++) {
+		var queryString = 'DELETE FROM ' + table + ' WHERE ?';
+		var query = db.query(queryString, arguments[i], function(err, result) {
+   			if(err) {
+	  			console.log(getCurrentTime() + 'Failed to delete value from db');
+   			} else {	
+	      		console.log(query.sql); 
+   			}
+		});
+    }
+}
+
+function dbInsert(db, table) {
+    for (var i = 2; i < arguments.length; i++) {
+		var queryString = 'INSERT INTO ' + table + ' SET ?';
+		var query = db.query(queryString, arguments[i], function(err, result) {
+   			if(err) {
+	  			console.log(getCurrentTime() + 'Failed to add value to db');
+   			} else {	
+	      		console.log(query.sql); 
+   			}
+		});
+    }
+}
+
 function dbSelect(db, table) {
 	var queryString = 'SELECT ';	
     if(arguments.length > 2) {
