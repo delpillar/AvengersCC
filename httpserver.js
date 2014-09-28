@@ -1,6 +1,6 @@
 var http = require('http');
 var url = require('url');
-var mysql =  require('mysql');
+var mysql = require('mysql');
 var util = require('util');
 
 var ipAddress = '127.0.0.1';
@@ -15,15 +15,15 @@ var server = http.createServer(function (request, response)
 {
     try {
         //info should be pulled from a file
-        var connectionString = 'mysql://' + userName + ':' + pw + '@'+ ipAddress + ':' + dbPort + '/' + db;
+        var connectionString = 'mysql://' + userName + ':' + pw + '@' + ipAddress + ':' + dbPort + '/' + db;
         var connection = mysql.createConnection(connectionString);
     
         //connect to db
         connection.connect(function(err) {
-        if(err) {
-            console.log(getCurrentTime() + 'Failed to connect to db');
-        } else { 
-            console.log(getCurrentTime() + 'Connected to db');
+            if(err) {
+                console.log(getCurrentTime() + 'Failed to connect to db');
+            } else { 
+                console.log(getCurrentTime() + 'Connected to db');
             }
         });
 
@@ -150,7 +150,7 @@ function getCurrentTime() {
     hrs = hrs - 12;
         AMPM = 'PM';
     }
-    if (hrs == 0)
+    if (hrs === 0)
         hrs = 12;
 
     var mins = dateInfo.getMinutes();
