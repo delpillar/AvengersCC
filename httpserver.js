@@ -11,8 +11,7 @@ var userName = 'root';
 var pw = '0910111214';
 var db = 'assemble';
 
-var server = http.createServer(function (request, response)
-{
+var server = http.createServer(function (request, response) {
     try {
         //info should be pulled from a file
         var connectionString = 'mysql://' + userName + ':' + pw + '@' + ipAddress + ':' + dbPort + '/' + db;
