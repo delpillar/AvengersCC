@@ -2,58 +2,58 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
-CREATE SCHEMA IF NOT EXISTS `assemble` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
-USE `assemble` ;
+CREATE SCHEMA IF NOT EXISTS `Assemble` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
+USE `Assemble` ;
 
 -- -----------------------------------------------------
--- Table `assemble`.`Users`
+-- Table `Assemble`.`Users`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `assemble`.`Users` (
+CREATE  TABLE IF NOT EXISTS `Assemble`.`Users` (
   `id` INT NOT NULL ,
   `name` VARCHAR(30) NULL ,
   `password` VARCHAR(256) NULL ,
   `email` VARCHAR(256) NULL ,
-  `default_availability` VARCHAR(256) NULL ,
+  `default_availability` VARCHAR(1024) NULL ,
   `token` VARCHAR(256) NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `assemble`.`Events`
+-- Table `Assemble`.`Events`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `assemble`.`Events` (
+CREATE  TABLE IF NOT EXISTS `Assemble`.`Events` (
   `id` INT NOT NULL ,
-  `name` VARCHAR(45) NULL ,
-  `start_date` VARCHAR(45) NULL ,
-  `end_date` VARCHAR(45) NULL ,
+  `name` VARCHAR(30) NULL ,
+  `start_date` INT NULL ,
+  `end_date` INT NULL ,
   `description` VARCHAR(1024) NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `assemble`.`UserEvents`
+-- Table `Assemble`.`UserEvents`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `assemble`.`UserEvents` (
-  `availability` VARCHAR(1056) NULL ,
+CREATE  TABLE IF NOT EXISTS `Assemble`.`UserEvents` (
+  `availability` VARCHAR(1024) NULL ,
   `Users_id` INT NOT NULL ,
   `Events_id` INT NOT NULL ,
   PRIMARY KEY (`Users_id`, `Events_id`) ,
   INDEX `fk_UserEvents_Events1_idx` (`Events_id` ASC) ,
   CONSTRAINT `fk_UserEvents_Users`
     FOREIGN KEY (`Users_id` )
-    REFERENCES `assemble`.`Users` (`id` )
+    REFERENCES `Assemble`.`Users` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_UserEvents_Events1`
     FOREIGN KEY (`Events_id` )
-    REFERENCES `assemble`.`Events` (`id` )
+    REFERENCES `Assemble`.`Events` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-USE `assemble` ;
+USE `Assemble` ;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
