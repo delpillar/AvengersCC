@@ -8,7 +8,7 @@ USE `Assemble` ;
 -- -----------------------------------------------------
 -- Table `Assemble`.`Users`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `Assemble`.`Users` (
+CREATE TABLE IF NOT EXISTS `Assemble`.`Users` (
   `id` INT NOT NULL ,
   `name` VARCHAR(30) NULL ,
   `password` VARCHAR(256) NULL ,
@@ -22,7 +22,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `Assemble`.`Events`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `Assemble`.`Events` (
+CREATE TABLE IF NOT EXISTS `Assemble`.`Events` (
   `id` INT NOT NULL ,
   `name` VARCHAR(30) NULL ,
   `start_date` INT NULL ,
@@ -35,7 +35,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `Assemble`.`UserEvents`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `Assemble`.`UserEvents` (
+CREATE TABLE IF NOT EXISTS `Assemble`.`UserEvents` (
   `availability` VARCHAR(1024) NULL ,
   `Users_id` INT NOT NULL ,
   `Events_id` INT NOT NULL ,
