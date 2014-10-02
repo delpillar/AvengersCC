@@ -44,12 +44,12 @@ CREATE  TABLE IF NOT EXISTS `Assemble`.`UserEvents` (
   CONSTRAINT `fk_UserEvents_Users`
     FOREIGN KEY (`Users_id` )
     REFERENCES `Assemble`.`Users` (`id` )
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_UserEvents_Events1`
     FOREIGN KEY (`Events_id` )
     REFERENCES `Assemble`.`Events` (`id` )
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
