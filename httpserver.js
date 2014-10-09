@@ -1,7 +1,10 @@
-var http = require('http');
-var url = require('url');
 var mysql = require('mysql');
+var http = require('http');
 var util = require('util');
+var url = require('url');
+var fs = require('fs');
+
+var page = 'index.html';
 
 var ipAddress = '127.0.0.1';
 var serverPort = '8000';
@@ -13,58 +16,50 @@ var db = 'assemble';
 
 var server = http.createServer(function (request, response) {
     try {
-        //info should be pulled from a file
-        var connectionString = 'mysql://' + userName + ':' + pw + '@' + ipAddress + ':' + dbPort + '/' + db;
-        var connection = mysql.createConnection(connectionString);
-    
-        //connect to db
-        connection.connect(function(err) {
-            if(err) {
-                console.log(getCurrentTime() + 'Failed to connect to db');
-            } else { 
-                console.log(getCurrentTime() + 'Connected to db');
-            }
-        });
+        var id = url.parse(request.url).pathname;
+        if (id.charAt(0) === '/') id = id.slice(1);
+        if (id.charAt(id.length - 1) === '/') id = id.slice(0, id.length - 1);
 
-        //randomize a fake dice roll
-        var diceRoll = Math.floor((Math.random() * 6) + 1); 
-        var testResult  = { number: diceRoll };
+        console.log(request.method);
 
-        var currentId = 50;
-        var tempEntry  = { idTest: currentId, number: diceRoll };
-
-        //add a random entry and a temp temp entry for updating
-        dbInsert(connection, 'test', testResult, tempEntry);
-        dbSelect(connection, 'test'); 
-
-        var newNumber = 13;
-        var updateItem = [ { number: newNumber }, { idTest: currentId } ];
-        //update the entry 50's number to 13
-        dbUpdate(connection, 'test', updateItem);
-        dbSelect(connection, 'test'); 
-      
-        var deleteEntry  = { idTest:  currentId};
-        //delete entry 50
-        dbDelete(connection, 'test', deleteEntry);
-        dbSelect(connection, 'test'); 
-
-        console.log();
-
-        //close connection to db
-        connection.end(function(err){
-            // Do something after the connection is gracefully terminated.
-        });
-
-        response.writeHead(200, {"Content-Type": "text/plain"});
-        var req = checkURL(request);
-        var resp;
-        if(req === "Hello"){
-            resp = "World";
-        } else {
-            resp = "Please Enter: Aaron, Monty or Hello";
+        if (id === page || id === '') {
+            fs.readFile(__dirname + '/' + page, function (err, data) {
+                if (err) console.log(err);
+                
+                response.writeHead(200, {'Content-Type': 'text/html'});
+                response.write(data);
+                response.end();
+            });
         }
-        response.write(resp);
-        response.end();
+        else if (request.method === 'POST') {
+                var data = '';
+                request.addListener('data', function (chunk) { data += chunk; });
+                request.addListener('end', function () {
+                    var parameters = JSON.parse(data);
+
+                    if(parameters.msgType === 'updateSchedule')
+                    {
+                        for(var i = 0; i < parameters.schedule.length; i++) {
+                            console.log('start: ' + parameters.schedule[i].start + ' end: ' + parameters.schedule[i].end);   
+                        }
+                    }
+
+                    response.writeHead(200, { 'content-type': 'text/plain' });
+                    response.write(JSON.stringify({msgType: "done"}));
+                    response.end();
+                });
+        }
+
+        //response.writeHead(200, {"Content-Type": "text/plain"});
+        //var req = checkURL(request);
+        //var resp;
+        //if(req === "Hello"){
+        //    resp = "World";
+        //} else {
+        //    resp = "Please Enter: Aaron, Monty or Hello";
+        //}
+        //response.write(resp);
+        //response.end();
     } 
     catch (e) {
         response.writeHead(500, { 'content-type': 'text/plain' });
@@ -77,6 +72,30 @@ server.listen(serverPort);
 process.stdout.write('\033c');
 console.log(getCurrentTime() + 'The server is operating on port ' + serverPort);
 
+function dbConnect() {
+    //info should be pulled from a file
+    var connectionString = 'mysql://' + userName + ':' + pw + '@' + ipAddress + ':' + dbPort + '/' + db;
+    var connection = mysql.createConnection(connectionString);
+
+    //connect to db
+    connection.connect(function(err) {
+        if(err) {
+            console.log(getCurrentTime() + 'Failed to connect to db');
+        } else { 
+            console.log(getCurrentTime() + 'Connected to db');
+        }
+    });
+}
+
+function dbDisconnect() {
+    //close connection to db
+    connection.end(function(err){
+        // Do something after the connection is gracefully terminated.
+    });
+}
+
+//var updateItem = [ { number: newNumber }, { idTest: currentId } ];
+//dbUpdate(connection, 'test', updateItem);
 function dbUpdate(db, table) {
     for (var i = 2; i < arguments.length; i++) {
         var queryString = 'UPDATE ' + table + ' SET ? WHERE ?';
@@ -90,6 +109,8 @@ function dbUpdate(db, table) {
     }
 }
 
+//var deleteEntry  = { idTest:  currentId};
+//dbDelete(connection, 'test', deleteEntry);
 function dbDelete(db, table) {
     for (var i = 2; i < arguments.length; i++) {
         var queryString = 'DELETE FROM ' + table + ' WHERE ?';
@@ -103,6 +124,9 @@ function dbDelete(db, table) {
     }
 }
 
+//var testResult  = { number: diceRoll };
+//var tempEntry  = { idTest: currentId, number: diceRoll };
+//dbInsert(connection, 'test', testResult, tempEntry);
 function dbInsert(db, table) {
     for (var i = 2; i < arguments.length; i++) {
         var queryString = 'INSERT INTO ' + table + ' SET ?';
@@ -116,6 +140,7 @@ function dbInsert(db, table) {
     }
 }
 
+//dbSelect(connection, 'test'); 
 function dbSelect(db, table) {
     var queryString = 'SELECT ';  
     if(arguments.length > 2) {
