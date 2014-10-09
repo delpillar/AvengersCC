@@ -8,30 +8,30 @@
     <body>
 
         <script type="text/javascript">
-			var ip = '127.0.0.1';
-			var port = '8000';
-			var address = ip + ':' + port;
+            var ip = '127.0.0.1';
+            var port = '8000';
+            var address = ip + ':' + port;
 
             if (!Date.now) {
                 Date.now = function() { return new Date().getTime(); };
             }
             var currentTime = Date.now();
 
-        	var updateScheduleParameters = { msgType: 'updateSchedule', schedule: [{ start: currentTime, end: currentTime },
-        	                                                                       { start: currentTime, end: currentTime }] };
-			var updateSchedule = new XMLHttpRequest();
-			updateSchedule.onreadystatechange = function() {
-				if (updateSchedule.readyState !== 4)
-				return;		    
+            var updateScheduleParameters = { msgType: 'updateSchedule', schedule: [{ start: currentTime, end: currentTime },
+                                                                                   { start: currentTime, end: currentTime }] };
+            var updateSchedule = new XMLHttpRequest();
+            updateSchedule.onreadystatechange = function() {
+                if (updateSchedule.readyState !== 4)
+                return;         
 
-				if (updateSchedule.status === 200) {
-					//response from server
-					var data = JSON.parse(updateSchedule.responseText);
-  			    }
-		    };
-	
-			updateSchedule.open('POST', address, true);
-			updateSchedule.send(JSON.stringify(updateScheduleParameters));
+                if (updateSchedule.status === 200) {
+                    //response from server
+                    var data = JSON.parse(updateSchedule.responseText);
+                }
+            };
+    
+            updateSchedule.open('POST', address, true);
+            updateSchedule.send(JSON.stringify(updateScheduleParameters));
         </script>
 
     </body>
