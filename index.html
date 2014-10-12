@@ -17,8 +17,11 @@
             }
             var currentTime = Date.now();
 
-            var updateScheduleParameters = { msgType: 'updateSchedule', schedule: [{ start: currentTime, end: currentTime },
-                                                                                   { start: currentTime, end: currentTime }] };
+            var updateScheduleParameters = { msgType: 'updateSchedule', 
+                                             usersid: '1',
+                                             eventsid: '1', 
+                                             availability: [{ start: currentTime, end: currentTime },
+                                                            { start: currentTime, end: currentTime }] };
             var updateSchedule = new XMLHttpRequest();
             updateSchedule.onreadystatechange = function() {
                 if (updateSchedule.readyState !== 4)
@@ -29,7 +32,7 @@
                     var data = JSON.parse(updateSchedule.responseText);
                 }
             };
-    
+            
             updateSchedule.open('POST', address, true);
             updateSchedule.send(JSON.stringify(updateScheduleParameters));
         </script>

@@ -14,13 +14,23 @@ var userName = 'root';
 var pw = '0910111214';
 var db = 'assemble';
 
+var connectionString = 'mysql://' + userName + ':' + pw + '@' + ipAddress + ':' + dbPort + '/' + db;
+var connection = mysql.createConnection(connectionString);
+
+//connect to db
+connection.connect(function(err) {
+    if(err) {
+        console.log(getCurrentTime() + 'Failed to connect to db');
+    } else { 
+        console.log(getCurrentTime() + 'Connected to db');
+    }
+});
+
 var server = http.createServer(function (request, response) {
     try {
         var id = url.parse(request.url).pathname;
         if (id.charAt(0) === '/') id = id.slice(1);
         if (id.charAt(id.length - 1) === '/') id = id.slice(0, id.length - 1);
-
-        console.log(request.method);
 
         if (id === page || id === '') {
             fs.readFile(__dirname + '/' + page, function (err, data) {
@@ -33,33 +43,26 @@ var server = http.createServer(function (request, response) {
         }
         else if (request.method === 'POST') {
                 var data = '';
+                
                 request.addListener('data', function (chunk) { data += chunk; });
                 request.addListener('end', function () {
                     var parameters = JSON.parse(data);
 
                     if(parameters.msgType === 'updateSchedule')
                     {
-                        for(var i = 0; i < parameters.schedule.length; i++) {
-                            console.log('start: ' + parameters.schedule[i].start + ' end: ' + parameters.schedule[i].end);   
-                        }
+                        var userEventEntry = { availability: JSON.stringify(parameters.availability),
+                                               Users_id: parameters.usersid, 
+                                               Events_id: parameters.eventsid };
+                        
+                        dbInsert(connection, 'userevents', userEventEntry);
+            
+                        response.writeHead(200, { 'content-type': 'text/plain' });
+                        response.write(JSON.stringify({ msgType: 'updateSchedule', status: 'complete' }));
+                        response.end();
                     }
 
-                    response.writeHead(200, { 'content-type': 'text/plain' });
-                    response.write(JSON.stringify({msgType: "done"}));
-                    response.end();
                 });
         }
-
-        //response.writeHead(200, {"Content-Type": "text/plain"});
-        //var req = checkURL(request);
-        //var resp;
-        //if(req === "Hello"){
-        //    resp = "World";
-        //} else {
-        //    resp = "Please Enter: Aaron, Monty or Hello";
-        //}
-        //response.write(resp);
-        //response.end();
     } 
     catch (e) {
         response.writeHead(500, { 'content-type': 'text/plain' });
@@ -81,8 +84,10 @@ function dbConnect() {
     connection.connect(function(err) {
         if(err) {
             console.log(getCurrentTime() + 'Failed to connect to db');
+            return connection;
         } else { 
             console.log(getCurrentTime() + 'Connected to db');
+            return;
         }
     });
 }
@@ -97,6 +102,7 @@ function dbDisconnect() {
 //var updateItem = [ { number: newNumber }, { idTest: currentId } ];
 //dbUpdate(connection, 'test', updateItem);
 function dbUpdate(db, table) {
+
     for (var i = 2; i < arguments.length; i++) {
         var queryString = 'UPDATE ' + table + ' SET ? WHERE ?';
         var query = db.query(queryString, arguments[i], function(err, result) {
