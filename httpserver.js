@@ -40,8 +40,21 @@ var server = http.createServer(function (request, response) {
                 response.write(data);
                 response.end();
             });
-        }
-        else if (request.method === 'POST') {
+        } else if(request.url.indexOf('.css') != -1) { 
+            fs.readFile(__dirname + '/' + id, function (err, data) {
+                if (err) console.log(err);
+                response.writeHead(200, {'Content-Type': 'text/css'});
+                response.write(data);
+                response.end();
+            });
+        } else if(request.url.indexOf('.js') != -1) { 
+            fs.readFile(__dirname + '/' + id, function (err, data) {
+                if (err) console.log(err);
+                response.writeHead(200, {'Content-Type': 'text/javascript'});
+                response.write(data);
+                response.end();
+            });    
+        } else if (request.method === 'POST') {
                 var data = '';
                 
                 request.addListener('data', function (chunk) { data += chunk; });
