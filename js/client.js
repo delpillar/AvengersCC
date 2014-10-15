@@ -9,30 +9,33 @@ function runClient() {
     }
     var currentTime = Date.now();
 
-    var updateScheduleParameters = { msgType: 'updateSchedule', 
+    var updateScheduleParameters = { msgType: 'addSchedule', 
                                      usersid: '1',
                                      eventsid: '1', 
                                      availability: [{ start: currentTime, end: currentTime },
                                                     { start: currentTime, end: currentTime }] };
 
-    var response = send(updateScheduleParameters);                                                
+    send(updateScheduleParameters);                                                
+
 }
 
 function send(msgParameters) {
     var sendRequest = new XMLHttpRequest();
-    
-    sendRequest.onreadystatechange = function() {
-        if (sendRequest.readyState !== 4)
-        return;         
-
-        if (sendRequest.status === 200) {
-            //response from server
-            var responseText = JSON.parse(sendRequest.responseText);
-
-            return responseText;
-        }
-    };
 
     sendRequest.open('POST', address, true);
     sendRequest.send(JSON.stringify(msgParameters));
+
+    sendRequest.onreadystatechange = function(callback) {
+        if (sendRequest.readyState === 4)
+        { 
+            if (sendRequest.status === 200) {
+                //response from server
+                handleData(sendRequest.responseText);
+            }
+        }
+    };
+}
+
+function handleData(response) {
+    document.getElementById('return').innerHTML = response;
 }
