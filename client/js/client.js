@@ -9,11 +9,13 @@ function runClient() {
     }
     var currentTime = Date.now();
 
-    var updateScheduleParameters = { msgType: 'addSchedule', 
-                                     usersid: '1',
-                                     eventsid: '1', 
-                                     availability: [{ start: currentTime, end: currentTime },
-                                                    { start: currentTime, end: currentTime }] };
+    var updateScheduleParameters = { 
+                                        msgType: 'addSchedule', 
+                                        usersid: '1',
+                                        eventsid: '1', 
+                                        availability: [ { start: currentTime, end: currentTime },
+                                                        { start: currentTime, end: currentTime } ] 
+                                };
 
     send(updateScheduleParameters);                                                
 
@@ -22,18 +24,17 @@ function runClient() {
 function send(msgParameters) {
     var sendRequest = new XMLHttpRequest();
 
-    sendRequest.open('POST', address, true);
-    sendRequest.send(JSON.stringify(msgParameters));
-
-    sendRequest.onreadystatechange = function(callback) {
-        if (sendRequest.readyState === 4)
-        { 
+    sendRequest.onreadystatechange = function(event) {
+        if (sendRequest.readyState === 4) { 
             if (sendRequest.status === 200) {
                 //response from server
                 handleData(sendRequest.responseText);
             }
         }
     };
+
+    sendRequest.open('POST', address, true);
+    sendRequest.send(JSON.stringify(msgParameters));
 }
 
 function handleData(response) {

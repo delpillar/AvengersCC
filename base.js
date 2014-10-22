@@ -158,10 +158,10 @@ exports.dbSelect = function (db, table) {
 exports.getCurrentTime = function () {
     var dateInfo = new Date();
     var hrs = dateInfo.getHours();
-    var AMPM = 'AM';
+    var ampm = 'AM';
     if (hrs >= 12) {
     hrs = hrs - 12;
-        AMPM = 'PM';
+        ampm = 'PM';
     }
     if (hrs === 0)
         hrs = 12;
@@ -176,7 +176,7 @@ exports.getCurrentTime = function () {
         secs = '0' + secs;
     }
 
-    var curTime = hrs + ':' + mins + ':' + secs + ' ' + AMPM + ' - ';
+    var curTime = hrs + ':' + mins + ':' + secs + ' ' + ampm + ' - ';
 
     return curTime;
 }
