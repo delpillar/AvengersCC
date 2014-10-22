@@ -160,7 +160,7 @@ exports.getCurrentTime = function () {
     var hrs = dateInfo.getHours();
     var ampm = 'AM';
     if (hrs >= 12) {
-    hrs = hrs - 12;
+        hrs = hrs - 12;
         ampm = 'PM';
     }
     if (hrs === 0)
