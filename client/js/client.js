@@ -2,12 +2,15 @@ var ip = '127.0.0.1';
 var port = '8000';
 var address = ip + ':' + port;
 
+var oneDay = 86400;
+
 function runClient() {
 
     if (!Date.now) {
         Date.now = function() { return new Date().getTime(); };
     }
     var currentTime = Date.now();
+    var tomorrow = currentTime + oneDay;
 
     var updateScheduleParameters = { 
                                         msgType: 'addSchedule', 
@@ -17,7 +20,17 @@ function runClient() {
                                                         { start: currentTime, end: currentTime } ] 
                                 };
 
-    send(updateScheduleParameters);                                                
+    var addEventParameters = { 
+                                        msgType: 'addEvent', 
+                                        eventName: 'meeting',
+                                        eventStartDate: currentTime, 
+                                        eventEndDate: tomorrow,
+                                        eventDescription: 'this meeting needs to be today'
+                                };
+
+
+    send(addEventParameters);                                                
+    //send(updateScheduleParameters);                                                
 
 }
 
