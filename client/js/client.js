@@ -19,6 +19,12 @@ function runClient() {
 
     send(updateScheduleParameters);                                                
 
+
+    //run readUserInfo event
+    var readUserInfoParameters = { usersid: '1' };
+    send(readUserInfoParameters);
+
+
 }
 
 function send(msgParameters) {
