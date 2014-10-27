@@ -16,4 +16,16 @@ exports.assemble = {
                                     status: 'complete' 
                                 });    
         }
-} 
+}   viewUser:
+        function (parameters) {
+            var userReadInfo = { Users_id: parameters.usersid };
+
+            base.dbSelect('assemble' , 'users' , userReadInfo);
+
+            return JSON.stringify({
+                                    msgType: 'readuser',
+                                    status: 'read'
+                                });
+
+        };
+
