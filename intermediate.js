@@ -20,7 +20,6 @@ exports.assemble = {
     addEvent:
         function (parameters) {
             var eventEntry = { 
-                                id: '1',
                                 name: parameters.eventName,
                                 start_date: parameters.eventStartDate, 
                                 end_date: parameters.eventEndDate,
