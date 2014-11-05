@@ -15,8 +15,8 @@ exports.assemble = {
                                     msgType: 'updateSchedule', 
                                     status: 'complete' 
                                 });    
-        }
-}   viewUser:
+        },
+   viewUser:
         function (parameters) {
             var userReadInfo = { Users_id: parameters.usersid };
 

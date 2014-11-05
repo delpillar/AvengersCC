@@ -37,6 +37,7 @@ function send(msgParameters) {
             if (sendRequest.status === 200) {
                 //response from server
                 handleData(sendRequest.responseText);
+                console.log(sendRequest.responseText);
             }
         }
     };
