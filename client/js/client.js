@@ -18,7 +18,6 @@ function runClient() {
                                 };
 
     send(updateScheduleParameters);                                                
-
 }
 
 function send(msgParameters) {
