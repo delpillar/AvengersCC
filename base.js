@@ -4,7 +4,8 @@ var ipAddress = '127.0.0.1';
 var dbPort = '4040'; 
 
 var userName = 'root';
-var pw = '0910111214';
+//var pw = '0910111214';
+var pw = 'tungaw27';
 var db = 'assemble';
 
 //info should be pulled from a file
