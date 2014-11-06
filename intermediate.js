@@ -3,29 +3,31 @@ var base = require('./base.js');
 exports.assemble = {
     addSchedule: 
         function (parameters) {
-            var userEventEntry = { 
-                                    availability: JSON.stringify(parameters.availability),
-                                    Users_id: parameters.usersid, 
-                                    Events_id: parameters.eventsid
-                                };
+            var userEventEntry = {
+                availability: JSON.stringify(parameters.availability),
+                Users_id: parameters.usersid, 
+                Events_id: parameters.eventsid
+            };
             
             base.dbInsert('userevents', userEventEntry);
 
             return JSON.stringify({ 
-                                    msgType: 'updateSchedule', 
-                                    status: 'complete' 
-                                });    
+                msgType: 'updateSchedule', 
+                status: 'complete' 
+            });    
         },
    viewUser:
         function (parameters) {
-            var userReadInfo = { Users_id: parameters.usersid };
+            var userReadInfo = { 
+                Users_id: parameters.usersid 
+            };
 
             base.dbSelect('assemble' , 'users' , userReadInfo);
 
             return JSON.stringify({
-                                    msgType: 'readuser',
-                                    status: 'read'
-                                });
+                msgType: 'readuser',
+                status: 'read'
+            });
 
         };
 
