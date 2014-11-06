@@ -22,10 +22,11 @@ exports.assemble = {
                 Users_id: parameters.usersid 
             };
 
-            base.dbSelect('assemble' , 'users' , userReadInfo);
+            response = base.dbSelect('assemble' , 'users' , userReadInfo);
 
             return JSON.stringify({
                 msgType: 'readuser',
+                data: response,
                 status: 'read'
             });
 
