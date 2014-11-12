@@ -9,7 +9,7 @@ USE `Assemble` ;
 -- Table `Assemble`.`Users`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Assemble`.`Users` (
-  `id` INT NOT NULL ,
+  `id` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(30) NULL ,
   `password` VARCHAR(256) NULL ,
   `email` VARCHAR(256) NULL ,
@@ -23,10 +23,10 @@ ENGINE = InnoDB;
 -- Table `Assemble`.`Events`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Assemble`.`Events` (
-  `id` INT NOT NULL ,
+  `id` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(30) NULL ,
-  `start_date` INT NULL ,
-  `end_date` INT NULL ,
+  `start_date` BIGINT NULL ,
+  `end_date` BIGINT NULL ,
   `description` VARCHAR(1024) NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
