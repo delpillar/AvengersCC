@@ -11,6 +11,19 @@ function runClient() {
     }
     var currentTime = Date.now();
     var tomorrow = currentTime + oneDay;
+    
+    var addUserParameters = {
+        msgType: 'addUser',
+        userName: 'Charles Tapar',
+        userPassword: 'makeitrain',
+        userEmail: 'knivex27@gmail.com',
+        availability: [
+            {start: currentTime, end: tomorrow}]
+//            {start: Date.UTC(2014, 11[, 4[, hour[, minute[, second[, millisecond]]]]]), 
+//             end: Date.UTC(year, month[, day[, hour[, minute[, second[, millisecond]]]]])}
+    }
+    
+    send(addUserParameters);
 
     var updateScheduleParameters = { 
                                         msgType: 'addSchedule', 

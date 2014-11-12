@@ -8,10 +8,20 @@ exports.assemble = {
                 Users_id: parameters.usersid, 
                 Events_id: parameters.eventsid
             };
-            
+
             base.dbInsert('userevents', userEventEntry, response);
         },
-    
+    addUser:
+        function(parameters, response){
+            var userEntry = {
+                name: parameters.userName,
+                password: parameters.userPassword,
+                email: parameters.userEmail,
+                default_availability: JSON.stringify(parameters.availability)
+            };
+            
+            base.dbInsert('users',userEntry,response);
+        },
     viewUser:
         function (parameters , response) {
             var userReadInfo = { 
