@@ -24,10 +24,7 @@ exports.dbDisconnect = function () {
 
 //var updateItem = [ { number: newNumber }, { idTest: currentId } ];
 //dbUpdate('test', updateItem);
-exports.dbUpdate = function (db, table) {
-    var valuesCount = arguments.length;
-    var values = arguments;
-
+exports.dbUpdate = function (table, value, response) {
     //connect to db
     exports.dbConnect();
 
@@ -36,17 +33,15 @@ exports.dbUpdate = function (db, table) {
             console.log(exports.getCurrentTime() + 'Failed to connect to db');
         } else { 
             console.log(exports.getCurrentTime() + 'Connected to db');
-
-            for (var i = 1; i < valuesCount; i++) {
-                var queryString = 'UPDATE ' + table + ' SET ? WHERE ?';
-                var query = connection.query(queryString, values[i], function(err, result) {
-                    if(err) {
-                        console.log(exports.getCurrentTime() + 'Failed to update value in db');
-                    } else {  
-                        console.log(query.sql); 
-                    }
-                });
-            }
+            var queryString = 'UPDATE ' + table + ' SET ? WHERE ?';
+            var query = connection.query(queryString, value, function(err, result) {
+                if(err) {
+                    console.log(exports.getCurrentTime() + 'Failed to update value in db');
+                } else {  
+                    console.log(query.sql); 
+                }
+                handleReturn(response, 'update');
+            });
             exports.dbDisconnect();   
         }
     });
@@ -54,10 +49,7 @@ exports.dbUpdate = function (db, table) {
 
 //var deleteEntry  = { idTest:  currentId};
 //dbDelete('test', deleteEntry);
-exports.dbDelete = function (db, table) {
-    var valuesCount = arguments.length;
-    var values = arguments;
-
+exports.dbDelete = function (table, value, response) {
     //connect to db
     exports.dbConnect();
 
@@ -66,17 +58,15 @@ exports.dbDelete = function (db, table) {
             console.log(exports.getCurrentTime() + 'Failed to connect to db');
         } else { 
             console.log(exports.getCurrentTime() + 'Connected to db');
-
-            for (var i = 1; i < valuesCount; i++) {
-                var queryString = 'DELETE FROM ' + table + ' WHERE ?';
-                var query = connection.query(queryString, values[i], function(err, result) {
-                    if(err) {
-                        console.log(exports.getCurrentTime() + 'Failed to delete value from db');
-                    } else {  
-                        console.log(query.sql); 
-                    }
-                });
-            }
+            var queryString = 'DELETE FROM ' + table + ' WHERE ?';
+            var query = connection.query(queryString, value, function(err, result) {
+                if(err) {
+                    console.log(exports.getCurrentTime() + 'Failed to delete value from db');
+                } else {  
+                    console.log(query.sql); 
+                }
+                handleReturn(response, 'delete');
+            });
             exports.dbDisconnect();   
         }
     });
@@ -84,11 +74,8 @@ exports.dbDelete = function (db, table) {
 
 //var testResult  = { number: diceRoll };
 //var tempEntry  = { idTest: currentId, number: diceRoll };
-//dbInsert('test', testResult, tempEntry);
-exports.dbInsert = function (table) {
-    var valuesCount = arguments.length;
-    var values = arguments;
-
+//dbInsert('test', tempEntry, response);
+exports.dbInsert = function (table, value, response) {
     //connect to db
     exports.dbConnect();
 
@@ -97,27 +84,22 @@ exports.dbInsert = function (table) {
             console.log(exports.getCurrentTime() + 'Failed to connect to db');
         } else { 
             console.log(exports.getCurrentTime() + 'Connected to db');
-
-            for (var i = 1; i < valuesCount; i++) {
-                var queryString = 'INSERT INTO ' + table + ' SET ?';
-                var query = connection.query(queryString, values[i], function(err, result) {
-                    if(err) {
-                        console.log(exports.getCurrentTime() + 'Failed to add value to db');
-                    } else {  
-                        console.log(query.sql); 
-                    }
-                });
-            }
+            var queryString = 'INSERT INTO ' + table + ' SET ?';
+            var query = connection.query(queryString, value, function(err, result) {
+                if(err) {
+                    console.log(exports.getCurrentTime() + 'Failed to add value to db');
+                } else {  
+                    console.log(query.sql); 
+                }
+                handleReturn(response, 'insert');
+            });
             exports.dbDisconnect();   
         }
     });
 }
 
 //dbSelect('test'); 
-exports.dbSelect = function (db, table) {
-    var valuesCount = arguments.length;
-    var values = arguments;
-
+exports.dbSelect = function (queryString, response) {
     //connect to db
     exports.dbConnect();
 
@@ -126,33 +108,42 @@ exports.dbSelect = function (db, table) {
             console.log(exports.getCurrentTime() + 'Failed to connect to db');
         } else { 
             console.log(exports.getCurrentTime() + 'Connected to db');
-
-            var queryString = 'SELECT ';  
-            if(valuesCount > 1) {
-                for (var i = 2; i < valuesCount; i++) {
-                    queryString = queryString + values[i];
-                    if((valuesCount - 1) != i) {
-                        queryString = queryString + ','; 
-                    }
-                }
-                queryString = queryString + ' FROM '+ table;  
-            } else {
-                queryString = queryString + '* FROM '+ table; 
-            }
-
             var query = connection.query(queryString, function(err, rows){
+
                 if(err) {
                     console.log(exports.getCurrentTime() + 'Failed to query db');
                     console.log(query.sql); 
                 } else {
                     console.log(query.sql); 
-                    console.log(rows);
+                    exports.dbDisconnect();   
+        
+                    handleReturn(response, 'select', rows);
                 }
             });
 
-            exports.dbDisconnect();   
         }
     });
+}
+
+function handleReturn(response, returnType) {
+    var responseText;
+
+    if(arguments.length < 3) {
+        responseText = JSON.stringify({ 
+                                        msgType: returnType, 
+                                        status: 'complete' 
+                                    });   
+    } else {
+        responseText = JSON.stringify({ 
+                                        msgType: returnType, 
+                                        data: arguments[2],
+                                        status: 'complete' 
+                                    });   
+    }
+
+    response.writeHead(200, { 'content-type': 'text/plain' });
+    response.write(responseText);
+    response.end();
 }
 
 exports.getCurrentTime = function () {
