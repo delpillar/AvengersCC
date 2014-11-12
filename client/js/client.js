@@ -17,12 +17,8 @@ function runClient() {
         userName: 'Charles Tapar',
         userPassword: 'makeitrain',
         userEmail: 'knivex27@gmail.com',
-        availability: [
-            {start: currentTime, end: tomorrow}]
-//            {start: Date.UTC(2014, 11[, 4[, hour[, minute[, second[, millisecond]]]]]), 
-//             end: Date.UTC(year, month[, day[, hour[, minute[, second[, millisecond]]]]])}
+        availability: [{start: currentTime, end: tomorrow}]
     }
-    
     send(addUserParameters);
 
     var updateScheduleParameters = { 
@@ -40,19 +36,17 @@ function runClient() {
                                         eventEndDate: tomorrow,
                                         eventDescription: 'this meeting needs to be today'
                                 };
-
-
     send(addEventParameters);                                                
     //send(updateScheduleParameters);                                                
 
 
     //run readUserInfo event - CharlesT
     var readUserInfoParameters = { 
-                                    msgType: 'readuser', 
-                                    usersid: '1' 
-                                };
-    
+        msgType: 'readuser', 
+        usersid: '1' 
+    };
     send(readUserInfoParameters);
+    
 }
 
 function send(msgParameters) {

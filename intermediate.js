@@ -8,9 +8,9 @@ exports.assemble = {
                 Users_id: parameters.usersid, 
                 Events_id: parameters.eventsid
             };
-
             base.dbInsert('userevents', userEventEntry, response);
         },
+    
     addUser:
         function(parameters, response){
             var userEntry = {
@@ -19,9 +19,9 @@ exports.assemble = {
                 email: parameters.userEmail,
                 default_availability: JSON.stringify(parameters.availability)
             };
-            
             base.dbInsert('users',userEntry,response);
         },
+    
     viewUser:
         function (parameters , response) {
             var userReadInfo = { 
@@ -30,13 +30,11 @@ exports.assemble = {
 
             var queryString = 
                 'SELECT * FROM Users WHERE id = ' +  userReadInfo;
-            
             // dbSelect function uses queryString and responds back with DB data in a JSON format(?)
             base.dbSelect(queryString, response);
         },
     
-    // View all the schedules in an appointed event
-    viewEventSchedules:
+    viewEventSchedules: // View all the schedules in an appointed event
         function (parameters, response) {
             var eventSchedules = {
                  Events_id: parameters.eventsid
@@ -55,7 +53,6 @@ exports.assemble = {
                                 end_date: parameters.eventEndDate,
                                 description: parameters.eventDescription
                             };
-
             base.dbInsert('events', eventEntry, response);
         }        
 } 
