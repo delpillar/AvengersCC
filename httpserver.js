@@ -63,11 +63,7 @@ var server = http.createServer(function (request, response) {
             request.addListener('end', function () {
                 var parameters = JSON.parse(data);
 
-                var responseText = intermediate.assemble[parameters.msgType](parameters);
-
-                response.writeHead(200, { 'content-type': 'text/plain' });
-                response.write(responseText);
-                response.end();
+                intermediate.assemble[parameters.msgType](parameters, response);
             });
         }
     } 
