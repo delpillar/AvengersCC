@@ -19,8 +19,19 @@ exports.assemble = {
         };
 
         var queryString = 'SELECT * FROM Users WHERE id = ' +  userReadInfo;
-        base.dbSelect(queryString, response)
+        base.dbSelect(queryString, response);
     },
+    
+    viewEventSchedules:
+     function (parameters, response) {
+         var eventSchedules = {
+             Events_id: parameters.eventsid
+         };
+         
+         var queryString = 'SELECT start_date, end_date FROM Events WHERE id = ' + eventSchedules;
+         base.dbSelect(queryString, response);
+     },
+    
     addEvent:
         function (parameters, response) {
             var eventEntry = { 
