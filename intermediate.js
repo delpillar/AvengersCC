@@ -14,14 +14,8 @@ exports.assemble = {
     
     viewUser:
         function (parameters , response) {
-            var userReadInfo = { 
-                Users_id: parameters.usersid 
-            };
-
             var queryString = 
-                'SELECT * FROM Users WHERE id = ' +  userReadInfo;
-            
-            // dbSelect function uses queryString and responds back with DB data in a JSON format(?)
+                'SELECT * FROM Users WHERE id = ' +  parameters.usersid ;
             base.dbSelect(queryString, response);
         },
     
