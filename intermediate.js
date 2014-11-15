@@ -10,5 +10,17 @@ exports.assemble = {
                                 };
             
             base.dbInsert('userevents', userEventEntry, response);
+        },
+
+    addEvent:
+        function (parameters, response) {
+            var eventEntry = { 
+                                name: parameters.eventName,
+                                start_date: parameters.eventStartDate, 
+                                end_date: parameters.eventEndDate,
+                                description: parameters.eventDescription
+                            };
+
+            base.dbInsert('events', eventEntry, response);
         }        
 } 
