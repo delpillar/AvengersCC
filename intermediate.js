@@ -14,7 +14,6 @@ exports.assemble = {
     
    viewUser:
     function (parameters , response) {
-        
         var queryString = 'SELECT * FROM Users WHERE id = ' +  parameters.usersid;
         base.dbSelect(queryString, response)
     },
