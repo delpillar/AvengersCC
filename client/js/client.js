@@ -12,6 +12,7 @@ function runClient() {
     var currentTime = Date.now();
     var tomorrow = currentTime + oneDay;
     
+    // Dummy hardcode adduser values.
     var addUserParameters = {
         msgType: 'addUser',
         userName: 'Charles Tapar',
