@@ -24,24 +24,15 @@ exports.assemble = {
     
     viewUser:
         function (parameters , response) {
-            var userReadInfo = { 
-                Users_id: parameters.usersid 
-            };
-
             var queryString = 
-                'SELECT * FROM Users WHERE id = ' +  userReadInfo;
-            // dbSelect function uses queryString and responds back with DB data in a JSON format(?)
+                'SELECT * FROM Users WHERE id = ' +  parameters.usersid;
             base.dbSelect(queryString, response);
         },
     
     viewEventSchedules: // View all the schedules in an appointed event
         function (parameters, response) {
-            var eventSchedules = {
-                 Events_id: parameters.eventsid
-            };
-         
             var queryString = 
-                'SELECT start_date, end_date FROM Events WHERE id = ' + eventSchedules;
+                'SELECT start_date, end_date FROM Events WHERE id = ' + parameters.eventsid;
             base.dbSelect(queryString, response);
         },
     
