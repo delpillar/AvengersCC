@@ -28,12 +28,8 @@ exports.assemble = {
     // View all the schedules in an appointed event
     viewEventSchedules:
         function (parameters, response) {
-            var eventSchedules = {
-                 Events_id: parameters.eventsid
-            };
-         
             var queryString = 
-                'SELECT start_date, end_date FROM Events WHERE id = ' + eventSchedules;
+                'SELECT start_date, end_date FROM Events WHERE id = ' + parameters.eventsid;
             base.dbSelect(queryString, response);
         },
     
