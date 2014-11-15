@@ -43,7 +43,7 @@ function runClient() {
 
     //run readUserInfo event - CharlesT
     var readUserInfoParameters = { 
-        msgType: 'readuser', 
+        msgType: 'viewUser', 
         usersid: '1' 
     };
     send(readUserInfoParameters);
