@@ -17,6 +17,7 @@ exports.assemble = {
         var queryString = 'SELECT * FROM Users WHERE id = ' +  parameters.usersid;
         base.dbSelect(queryString, response)
     },
+    
     addEvent:
         function (parameters, response) {
             var eventEntry = { 
