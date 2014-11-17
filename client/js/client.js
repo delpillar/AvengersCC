@@ -23,12 +23,12 @@ function runClient() {
                                 };
 
     var addEventParameters = { 
-                                    msgType: 'addEvent', 
-                                    eventName: 'meeting',
-                                    eventStartDate: currentTime, 
-                                    eventEndDate: tomorrow,
-                                    eventDescription: 'this meeting needs to be today'
-                                };
+                                msgType: 'addEvent', 
+                                eventName: 'meeting',
+                                eventStartDate: currentTime, 
+                                eventEndDate: tomorrow,
+                                eventDescription: 'this meeting needs to be today'
+                            };
 
     var updateUserParameters = { 
                                     msgType: 'updateUser', 
