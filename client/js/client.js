@@ -12,13 +12,13 @@ function runClient() {
     var currentTime = Date.now();
     var tomorrow = currentTime + oneDay;
 
-    var updateScheduleParameters = { 
-                                        msgType: 'addSchedule', 
-                                        usersid: '1',
-                                        eventsid: '1', 
-                                        availability: [ { start: currentTime, end: currentTime },
-                                                        { start: currentTime, end: currentTime } ] 
-                                };
+    var addcheduleParameters = { 
+                                    msgType: 'addSchedule', 
+                                    usersid: '1',
+                                    eventsid: '1', 
+                                    availability: [ { start: currentTime, end: currentTime },
+                                                    { start: currentTime, end: currentTime } ] 
+                            };
 
     var addEventParameters = { 
                                 msgType: 'addEvent', 
@@ -37,10 +37,9 @@ function runClient() {
                                 eventsid: '2'
                             };
 
-
     send(updateEventParameters);                                                
     //send(addEventParameters);                                                
-    //send(updateScheduleParameters);                                                
+    //send(addScheduleParameters);                                                
 }
 
 function send(msgParameters) {
