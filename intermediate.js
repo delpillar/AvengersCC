@@ -36,7 +36,7 @@ exports.assemble = {
                             { 
                                 id: parameters.usersid
                             } ];
-            console.log(JSON.stringify(userEntry));            
+
             base.dbUpdate('users', userEntry, response);
         }
 
