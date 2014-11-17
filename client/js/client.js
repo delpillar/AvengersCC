@@ -12,25 +12,33 @@ function runClient() {
     var currentTime = Date.now();
     var tomorrow = currentTime + oneDay;
 
-    var updateScheduleParameters = { 
-                                        msgType: 'addSchedule', 
-                                        usersid: '1',
-                                        eventsid: '1', 
-                                        availability: [ { start: currentTime, end: currentTime },
-                                                        { start: currentTime, end: currentTime } ] 
+    var addScheduleParameters = { 
+                                    msgType: 'addSchedule', 
+                                    usersid: '1',
+                                    eventsid: '1', 
+                                    availability: [ { start: currentTime, end: currentTime },
+                                                    { start: currentTime, end: currentTime } ] 
                                 };
 
     var addEventParameters = { 
-                                        msgType: 'addEvent', 
-                                        eventName: 'meeting',
-                                        eventStartDate: currentTime, 
-                                        eventEndDate: tomorrow,
-                                        eventDescription: 'this meeting needs to be today'
-                                };
+                                msgType: 'addEvent', 
+                                eventName: 'meeting',
+                                eventStartDate: currentTime, 
+                                eventEndDate: tomorrow,
+                                eventDescription: 'this meeting needs to be today'
+                            };
 
+    var updateScheduleParameters = { 
+                                        msgType: 'updateSchedule', 
+                                        usersid: '1',
+                                        eventsid: '1', 
+                                        availability: [ { start: currentTime, end: tomorrow },
+                                                        { start: currentTime, end: tomorrow } ] 
+                                    };
 
-    send(addEventParameters);                                                
-    //send(updateScheduleParameters);                                                
+    send(updateScheduleParameters);                                                
+    //send(addEventParameters);                                                
+    //send(addScheduleParameters);                                                
 
 }
 
