@@ -39,4 +39,10 @@ exports.assemble = {
             base.dbUpdate('events', eventEntry, response);
         }
         
+    viewSchedule:
+        function (parameters, response) {
+            var scheduleEntry = 'SELECT * FROM userevents WHERE users_id = ' + parameters.usersid + ' AND events_id= ' + parameters.eventsid;
+
+            base.dbSelect(scheduleEntry, response);
+        }        
 } 

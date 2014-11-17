@@ -12,7 +12,7 @@ function runClient() {
     var currentTime = Date.now();
     var tomorrow = currentTime + oneDay;
 
-    var addcheduleParameters = { 
+    var addScheduleParameters = { 
                                     msgType: 'addSchedule', 
                                     usersid: '1',
                                     eventsid: '1', 
@@ -37,7 +37,14 @@ function runClient() {
                                 eventsid: '2'
                             };
 
-    send(updateEventParameters);                                                
+    var viewScheduleParameters = { 
+                                    msgType: 'viewSchedule', 
+                                    usersid: '1',
+                                    eventsid: '1'
+                                };
+
+    //send(updateEventParameters);                                                
+    //send(viewScheduleParameters);                                                
     //send(addEventParameters);                                                
     //send(addScheduleParameters);                                                
 }
