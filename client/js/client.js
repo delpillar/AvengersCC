@@ -12,26 +12,31 @@ function runClient() {
     var currentTime = Date.now();
     var tomorrow = currentTime + oneDay;
 
-    var updateScheduleParameters = { 
-                                        msgType: 'addSchedule', 
-                                        usersid: '1',
-                                        eventsid: '1', 
-                                        availability: [ { start: currentTime, end: currentTime },
-                                                        { start: currentTime, end: currentTime } ] 
+    var addScheduleParameters = { 
+                                    msgType: 'addSchedule', 
+                                    usersid: '1',
+                                    eventsid: '1', 
+                                    availability: [ { start: currentTime, end: currentTime },
+                                                    { start: currentTime, end: currentTime } ] 
                                 };
 
     var addEventParameters = { 
-                                        msgType: 'addEvent', 
-                                        eventName: 'meeting',
-                                        eventStartDate: currentTime, 
-                                        eventEndDate: tomorrow,
-                                        eventDescription: 'this meeting needs to be today'
+                                msgType: 'addEvent', 
+                                eventName: 'meeting',
+                                eventStartDate: currentTime, 
+                                eventEndDate: tomorrow,
+                                eventDescription: 'this meeting needs to be today'
+                            };
+
+    var viewScheduleParameters = { 
+                                    msgType: 'viewSchedule', 
+                                    usersid: '1',
+                                    eventsid: '1'
                                 };
 
-
-    send(addEventParameters);                                                
-    //send(updateScheduleParameters);                                                
-
+    send(viewScheduleParameters);                                                
+    //send(addEventParameters);                                                
+    //send(addScheduleParameters);                                                
 }
 
 function send(msgParameters) {

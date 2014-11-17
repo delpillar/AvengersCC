@@ -3,13 +3,13 @@ var base = require('./base.js');
 exports.assemble = {
     addSchedule: 
         function (parameters, response) {
-            var userEventEntry = { 
+            var scheduleEntry = { 
                                     availability: JSON.stringify(parameters.availability),
                                     Users_id: parameters.usersid, 
                                     Events_id: parameters.eventsid
                                 };
             
-            base.dbInsert('userevents', userEventEntry, response);
+            base.dbInsert('userevents', scheduleEntry, response);
         },
 
     addEvent:
@@ -22,5 +22,12 @@ exports.assemble = {
                             };
 
             base.dbInsert('events', eventEntry, response);
+        },
+
+    viewSchedule:
+        function (parameters, response) {
+            var scheduleEntry = 'SELECT * FROM userevents WHERE users_id = ' + parameters.usersid + ' AND events_id= ' + parameters.eventsid;
+
+            base.dbSelect(scheduleEntry, response);
         }        
 } 
