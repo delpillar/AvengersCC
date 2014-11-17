@@ -22,5 +22,22 @@ exports.assemble = {
                             };
 
             base.dbInsert('events', eventEntry, response);
-        }        
+        },    
+
+    updateUser:
+        function (parameters, response) {
+            var userEntry = [ { 
+                                name: parameters.username,
+                                password: parameters.password, 
+                                email: parameters.email,
+                                default_availability: JSON.stringify(parameters.defaultAvailability),
+                                token: parameters.token
+                            },
+                            { 
+                                id: parameters.usersid
+                            } ];
+            console.log(JSON.stringify(userEntry));            
+            base.dbUpdate('users', userEntry, response);
+        }
+
 } 

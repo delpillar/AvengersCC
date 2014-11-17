@@ -1,3 +1,5 @@
+//these are placeholder values for initial testing purposes
+
 var ip = '127.0.0.1';
 var port = '8000';
 var address = ip + ':' + port;
@@ -12,25 +14,35 @@ function runClient() {
     var currentTime = Date.now();
     var tomorrow = currentTime + oneDay;
 
-    var updateScheduleParameters = { 
-                                        msgType: 'addSchedule', 
-                                        usersid: '1',
-                                        eventsid: '1', 
-                                        availability: [ { start: currentTime, end: currentTime },
-                                                        { start: currentTime, end: currentTime } ] 
+    var addScheduleParameters = { 
+                                    msgType: 'addSchedule', 
+                                    usersid: '1',
+                                    eventsid: '1', 
+                                    availability: [ { start: currentTime, end: currentTime },
+                                                    { start: currentTime, end: currentTime } ] 
                                 };
 
     var addEventParameters = { 
-                                        msgType: 'addEvent', 
-                                        eventName: 'meeting',
-                                        eventStartDate: currentTime, 
-                                        eventEndDate: tomorrow,
-                                        eventDescription: 'this meeting needs to be today'
+                                    msgType: 'addEvent', 
+                                    eventName: 'meeting',
+                                    eventStartDate: currentTime, 
+                                    eventEndDate: tomorrow,
+                                    eventDescription: 'this meeting needs to be today'
                                 };
 
+    var updateUserParameters = { 
+                                    msgType: 'updateUser', 
+                                    username: 'kevp',
+                                    password: '123', 
+                                    email: 'kevp@assemble.com',
+                                    defaultAvailability: addScheduleParameters.availability,
+                                    token: 'BCE',
+                                    usersid: '1'
+                                };
 
-    send(addEventParameters);                                                
-    //send(updateScheduleParameters);                                                
+    send(updateUserParameters);                                                
+    //send(addEventParameters);                                                
+    //send(addScheduleParameters);                                                
 
 }
 
