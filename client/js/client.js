@@ -21,17 +21,26 @@ function runClient() {
                                 };
 
     var addEventParameters = { 
-                                        msgType: 'addEvent', 
-                                        eventName: 'meeting',
-                                        eventStartDate: currentTime, 
-                                        eventEndDate: tomorrow,
-                                        eventDescription: 'this meeting needs to be today'
-                                };
+                                msgType: 'addEvent', 
+                                eventName: 'meeting',
+                                eventStartDate: currentTime, 
+                                eventEndDate: tomorrow,
+                                eventDescription: 'this meeting needs to be today'
+                            };
+
+    var updateEventParameters = { 
+                                msgType: 'updateEvent', 
+                                eventName: 'gathering',
+                                eventStartDate: currentTime, 
+                                eventEndDate: tomorrow,
+                                eventDescription: 'this meeting needs to be tomorrow',
+                                eventsid: '2'
+                            };
 
 
-    send(addEventParameters);                                                
+    send(updateEventParameters);                                                
+    //send(addEventParameters);                                                
     //send(updateScheduleParameters);                                                
-
 }
 
 function send(msgParameters) {
