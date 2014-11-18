@@ -55,6 +55,7 @@ function runClient() {
                                     eventsid: '1'
                                 };
     
+    
     //send(updateUserParameters);                                                
     //send(updateEventParameters);                                                
     //send(viewScheduleParameters);                                                
