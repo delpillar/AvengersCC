@@ -29,7 +29,18 @@ function runClient() {
                                 eventEndDate: tomorrow,
                                 eventDescription: 'this meeting needs to be today'
                             };
-
+    
+    // Dummy hardcode adduser values.
+    var addUserParameters = {
+                                msgType: 'addUser',
+                                userName: 'Charles Tapar',
+                                userPassword: 'makeitrain',
+                                userEmail: 'knivex27@gmail.com',
+                                availability: [ {start: currentTime, end: tomorrow}, 
+                                                {start: currentTime, end: tomorrow} ]
+    };
+    
+    
     var updateScheduleParameters = { 
                                         msgType: 'updateSchedule', 
                                         usersid: '1',
@@ -68,6 +79,7 @@ function runClient() {
     //send(updateEventParameters);                                                
     //send(addEventParameters);                                                
     //send(addScheduleParameters);                                                
+    //send(addUserParameters);
     //send(viewScheduleParameters);                                                
 }
 
