@@ -65,7 +65,7 @@ exports.assemble = {
                             { 
                                 id: parameters.eventsid
                             } ];
-            console.log(JSON.stringify(eventEntry));            
+
             base.dbUpdate('events', eventEntry, response);
         },
         
