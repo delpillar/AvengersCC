@@ -56,6 +56,12 @@ function runClient() {
                                 eventDescription: 'this meeting needs to be tomorrow',
                                 eventsid: '2'
                             };
+    
+    var viewEventParameters = { 
+                                msgType: 'viewEvent', 
+                                eventsid: '1' 
+                            };
+        
 
     var viewScheduleParameters = { 
                                     msgType: 'viewSchedule', 
@@ -73,7 +79,8 @@ function runClient() {
     //send(updateUserParameters);                                                
     //send(updateEventParameters);                                                
     //send(addEventParameters);                                                
-    //send(addScheduleParameters);                                                
+    //send(addScheduleParameters);                                               
+    //send(viewEventParameters);
     //send(viewScheduleParameters);                                                
 }
 
