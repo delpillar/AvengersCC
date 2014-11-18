@@ -18,7 +18,7 @@ function runClient() {
                                     eventsid: '1', 
                                     availability: [ { start: currentTime, end: currentTime },
                                                     { start: currentTime, end: currentTime } ] 
-                                };
+                            };
 
     var addEventParameters = { 
                                 msgType: 'addEvent', 
@@ -28,13 +28,23 @@ function runClient() {
                                 eventDescription: 'this meeting needs to be today'
                             };
 
+    var updateEventParameters = { 
+                                msgType: 'updateEvent', 
+                                eventName: 'gathering',
+                                eventStartDate: currentTime, 
+                                eventEndDate: tomorrow,
+                                eventDescription: 'this meeting needs to be tomorrow',
+                                eventsid: '2'
+                            };
+
     var viewScheduleParameters = { 
                                     msgType: 'viewSchedule', 
                                     usersid: '1',
                                     eventsid: '1'
                                 };
 
-    send(viewScheduleParameters);                                                
+    //send(updateEventParameters);                                                
+    //send(viewScheduleParameters);                                                
     //send(addEventParameters);                                                
     //send(addScheduleParameters);                                                
 }
