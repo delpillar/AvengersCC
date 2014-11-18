@@ -8,28 +8,19 @@ exports.assemble = {
                 Users_id: parameters.usersid, 
                 Events_id: parameters.eventsid
             };
+            
             base.dbInsert('userevents', userEventEntry, response);
-        },
-    
-    addUser:
-        function(parameters, response){
-            var userEntry = {
-                name: parameters.userName,
-                password: parameters.userPassword,
-                email: parameters.userEmail,
-                default_availability: JSON.stringify(parameters.availability)
-            };
-            base.dbInsert('users',userEntry,response);
         },
     
     viewUser:
         function (parameters , response) {
             var queryString = 
-                'SELECT * FROM Users WHERE id = ' +  parameters.usersid;
+                'SELECT * FROM Users WHERE id = ' +  parameters.usersid ;
             base.dbSelect(queryString, response);
         },
     
-    viewEventSchedules: // View all the schedules in an appointed event
+    // View all the schedules in an appointed event
+    viewEventSchedules:
         function (parameters, response) {
             var queryString = 
                 'SELECT start_date, end_date FROM Events WHERE id = ' + parameters.eventsid;
@@ -44,6 +35,7 @@ exports.assemble = {
                                 end_date: parameters.eventEndDate,
                                 description: parameters.eventDescription
                             };
+
             base.dbInsert('events', eventEntry, response);
         }        
 } 

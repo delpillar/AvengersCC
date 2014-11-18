@@ -11,16 +11,6 @@ function runClient() {
     }
     var currentTime = Date.now();
     var tomorrow = currentTime + oneDay;
-    
-    // Dummy hardcode adduser values.
-    var addUserParameters = {
-        msgType: 'addUser',
-        userName: 'Charles Tapar',
-        userPassword: 'makeitrain',
-        userEmail: 'knivex27@gmail.com',
-        availability: [{start: currentTime, end: tomorrow}]
-    }
-    send(addUserParameters);
 
     var updateScheduleParameters = { 
                                         msgType: 'addSchedule', 
@@ -37,17 +27,19 @@ function runClient() {
                                         eventEndDate: tomorrow,
                                         eventDescription: 'this meeting needs to be today'
                                 };
+
+
     send(addEventParameters);                                                
     //send(updateScheduleParameters);                                                
 
 
     //run readUserInfo event - CharlesT
     var readUserInfoParameters = { 
-        msgType: 'viewUser', 
-        usersid: '1' 
-    };
-    send(readUserInfoParameters);
+                                    msgType: 'viewUser', 
+                                    usersid: '1' 
+                                };
     
+    send(readUserInfoParameters);
 }
 
 function send(msgParameters) {
