@@ -30,6 +30,14 @@ function runClient() {
                                 eventDescription: 'this meeting needs to be today'
                             };
 
+    var updateScheduleParameters = { 
+                                        msgType: 'updateSchedule', 
+                                        usersid: '1',
+                                        eventsid: '1', 
+                                        availability: [ { start: currentTime, end: tomorrow },
+                                                        { start: currentTime, end: tomorrow } ] 
+                                    };
+
     var updateUserParameters = { 
                                     msgType: 'updateUser', 
                                     username: 'kevp',
@@ -55,7 +63,7 @@ function runClient() {
                                     eventsid: '1'
                                 };
     
-    
+    //send(updateScheduleParameters);                                                
     //send(updateUserParameters);                                                
     //send(updateEventParameters);                                                
     //send(viewScheduleParameters);                                                
