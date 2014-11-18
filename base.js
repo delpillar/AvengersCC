@@ -35,10 +35,10 @@ exports.dbUpdate = function (table, value, response) {
             console.log(exports.getCurrentTime() + 'Connected to db');
 
             var queryString = 'UPDATE ' + table + ' SET ? WHERE ?';
-
             if(value.length === 3) {
-                queryString = 'UPDATE ' + table + ' SET ? WHERE ? AND ?';
+                queryString = queryString + ' AND ?';
             }
+            
             var query = connection.query(queryString, value, function(err, result) {
                 if(err) {
                     console.log(exports.getCurrentTime() + 'Failed to update value in db');
