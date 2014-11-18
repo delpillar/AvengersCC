@@ -1,3 +1,5 @@
+//these are placeholder values for initial testing purposes
+
 var ip = '127.0.0.1';
 var port = '8000';
 var address = ip + ':' + port;
@@ -28,6 +30,16 @@ function runClient() {
                                 eventDescription: 'this meeting needs to be today'
                             };
 
+    var updateUserParameters = { 
+                                    msgType: 'updateUser', 
+                                    username: 'kevp',
+                                    password: '123', 
+                                    email: 'kevp@assemble.com',
+                                    defaultAvailability: addScheduleParameters.availability,
+                                    token: 'BCE',
+                                    usersid: '1'
+                                };
+
     var updateEventParameters = { 
                                 msgType: 'updateEvent', 
                                 eventName: 'gathering',
@@ -42,7 +54,9 @@ function runClient() {
                                     usersid: '1',
                                     eventsid: '1'
                                 };
-
+    
+    
+    //send(updateUserParameters);                                                
     //send(updateEventParameters);                                                
     //send(viewScheduleParameters);                                                
     //send(addEventParameters);                                                

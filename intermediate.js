@@ -22,6 +22,22 @@ exports.assemble = {
                             };
 
             base.dbInsert('events', eventEntry, response);
+        },    
+
+    updateUser:
+        function (parameters, response) {
+            var userEntry = [ { 
+                                name: parameters.username,
+                                password: parameters.password, 
+                                email: parameters.email,
+                                default_availability: JSON.stringify(parameters.defaultAvailability),
+                                token: parameters.token
+                            },
+                            { 
+                                id: parameters.usersid
+                            } ];
+
+            base.dbUpdate('users', userEntry, response);
         },
 
     updateEvent:
@@ -37,7 +53,8 @@ exports.assemble = {
                             } ];
             console.log(JSON.stringify(eventEntry));            
             base.dbUpdate('events', eventEntry, response);
-        }
+        },
+        
         
     viewSchedule:
         function (parameters, response) {
