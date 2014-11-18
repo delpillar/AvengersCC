@@ -23,7 +23,19 @@ exports.assemble = {
 
             base.dbInsert('events', eventEntry, response);
         },
-
+    
+    addUser: //call function to add new users to database
+        function(parameters, response) {
+            var userEntry = {
+                                name: parameters.userName,
+                                password: parameters.userPassword,
+                                email: parameters.userEmail,
+                                default_availability: JSON.stringify(parameters.availability)
+                            };
+            
+            base.dbInsert('users',userEntry,response);
+        },
+    
     updateSchedule:
         function (parameters, response) {
             var scheduleEntry = [ { 
