@@ -74,5 +74,12 @@ exports.assemble = {
             var scheduleEntry = 'SELECT * FROM userevents WHERE users_id = ' + parameters.usersid + ' AND events_id= ' + parameters.eventsid;
 
             base.dbSelect(scheduleEntry, response);
-        }        
+        },
+    
+    viewUser: // call function to view user all information
+        function (parameters , response) {
+            var userEntry = 'SELECT * FROM Users WHERE id = ' +  parameters.usersid;
+            
+            base.dbSelect(userEntry, response)
+    }
 } 

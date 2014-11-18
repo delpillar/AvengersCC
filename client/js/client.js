@@ -63,6 +63,12 @@ function runClient() {
                                     eventsid: '1'
                                 };
     
+    var viewUserParameters = { 
+                                msgType: 'viewUser', 
+                                usersid: '1' 
+                            };
+    
+    //send(viewUserParameters);
     //send(updateScheduleParameters);                                                
     //send(updateUserParameters);                                                
     //send(updateEventParameters);                                                
