@@ -68,7 +68,15 @@ exports.assemble = {
 
             base.dbUpdate('events', eventEntry, response);
         },
-        
+    
+    // View all the schedules in an appointed event
+    viewEvent:
+        function (parameters, response) {
+            var eventEntry = 'SELECT * FROM Events WHERE id = ' + parameters.eventsid;
+            
+            base.dbSelect(eventEntry, response);
+        },
+    
     viewSchedule:
         function (parameters, response) {
             var scheduleEntry = 'SELECT * FROM userevents WHERE users_id = ' + parameters.usersid + ' AND events_id= ' + parameters.eventsid;
