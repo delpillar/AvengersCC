@@ -10,16 +10,16 @@ var page = 'index.html';
 
 var ipAddress = '127.0.0.1';
 var serverPort = '8000';
-var dbPort = '4040'; 
+var dbPort = '4040';
 
 var server = http.createServer(function (request, response) {
     try {
         var id = url.parse(request.url).pathname;
-        
+
         if (id.charAt(0) === '/') {
             id = id.slice(1);
         }
-        
+
         if (id.charAt(id.length - 1) === '/') {
             id = id.slice(0, id.length - 1);
         }
@@ -34,7 +34,7 @@ var server = http.createServer(function (request, response) {
                 response.write(data);
                 response.end();
             });
-        } else if(request.url.indexOf('.css') != -1) { 
+        } else if(request.url.indexOf('.css') != -1) {
             fs.readFile(__dirname + '/' + path + id, function (err, data) {
                 if (err) {
                     console.log(err);
@@ -44,7 +44,7 @@ var server = http.createServer(function (request, response) {
                 response.write(data);
                 response.end();
             });
-        } else if(request.url.indexOf('.js') != -1) { 
+        } else if(request.url.indexOf('.js') != -1) {
             fs.readFile(__dirname + '/' + path + id, function (err, data) {
                 if (err) {
                     console.log(err);
@@ -53,20 +53,20 @@ var server = http.createServer(function (request, response) {
                 response.writeHead(200, {'Content-Type': 'text/javascript'});
                 response.write(data);
                 response.end();
-            });    
+            });
         } else if (request.method === 'POST') {
             var data = '';
             request.addListener('data', function (chunk) {
-                data += chunk; 
+                data += chunk;
             });
-            
+
             request.addListener('end', function () {
                 var parameters = JSON.parse(data);
 
                 intermediate.assemble[parameters.msgType](parameters, response);
             });
         }
-    } 
+    }
     catch (e) {
         response.writeHead(500, { 'content-type': 'text/plain' });
         response.write('ERROR:' + e);
