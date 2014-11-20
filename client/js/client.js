@@ -92,7 +92,6 @@ function runClient() {
     //send(addEventParameters);                                                
     //send(addScheduleParameters);                                                
     //send(addUserParameters);
-    //send(addScheduleParameters);                                               
     //send(viewEventParameters);
     //send(viewScheduleParameters);                                                
 }
