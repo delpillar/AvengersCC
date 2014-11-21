@@ -85,16 +85,15 @@ function runClient() {
                                 usersid: '1' 
                             };
     
-    //send(viewUserParameters);
     //send(updateScheduleParameters);                                                
     //send(updateUserParameters);                                                
     //send(updateEventParameters);                                                
     //send(addEventParameters);                                                
-    //send(addScheduleParameters);                                                
-    //send(addUserParameters);
     //send(addScheduleParameters);                                               
-    //send(viewEventParameters);
-    //send(viewScheduleParameters);                                                
+    //send(addUserParameters);
+    send(viewEventParameters);
+    send(viewScheduleParameters);                                                
+    send(viewUserParameters);
 }
 
 function send(msgParameters) {
@@ -114,5 +113,5 @@ function send(msgParameters) {
 }
 
 function handleData(response) {
-    document.getElementById('return').innerHTML = response;
+    document.getElementById('return').innerHTML += response + '\n';
 }

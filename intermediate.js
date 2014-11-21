@@ -9,7 +9,7 @@ exports.assemble = {
                                     Events_id: parameters.eventsid
                                 };
             
-            base.dbInsert('userevents', scheduleEntry, response);
+            base.dbTransaction('dbInsert', 'userevents', null, scheduleEntry, response);
         },
 
     addEvent:
@@ -21,7 +21,7 @@ exports.assemble = {
                                 description: parameters.eventDescription
                             };
 
-            base.dbInsert('events', eventEntry, response);
+            base.dbTransaction('dbInsert', 'events', null, eventEntry, response);
         },
     
     addUser: //call function to add new users to database
@@ -33,7 +33,7 @@ exports.assemble = {
                                 default_availability: JSON.stringify(parameters.availability)
                             };
             
-            base.dbInsert('users',userEntry,response);
+            base.dbTransaction('dbInsert', 'users', null, userEntry, response);
         },
     
     updateSchedule:
@@ -47,7 +47,7 @@ exports.assemble = {
                                     Events_id: parameters.eventsid
                                 } ];
 
-            base.dbUpdate('userevents', scheduleEntry, response);
+            base.dbTransaction('dbUpdate', 'userevents', null, scheduleEntry, response);
         },    
 
     updateUser:
@@ -63,7 +63,7 @@ exports.assemble = {
                                 id: parameters.usersid
                             } ];
 
-            base.dbUpdate('users', userEntry, response);
+            base.dbTransaction('dbUpdate', 'users', null, userEntry, response);
         },
 
     updateEvent:
@@ -78,27 +78,27 @@ exports.assemble = {
                                 id: parameters.eventsid
                             } ];
 
-            base.dbUpdate('events', eventEntry, response);
+            base.dbTransaction('dbUpdate', 'events', null, eventEntry, response);
         },
     
     viewEvent: // View all the schedules in an appointed event
         function (parameters, response) {
             var eventEntry = 'SELECT * FROM Events WHERE id = ' + parameters.eventsid;
             
-            base.dbSelect(eventEntry, response);
+            base.dbTransaction('dbSelect', null, eventEntry, null, response);
         },
     
     viewSchedule:
         function (parameters, response) {
             var scheduleEntry = 'SELECT * FROM userevents WHERE users_id = ' + parameters.usersid + ' AND events_id= ' + parameters.eventsid;
 
-            base.dbSelect(scheduleEntry, response);
+            base.dbTransaction('dbSelect', null, scheduleEntry, null,  response);
         },
     
     viewUser: // call function to view user all information
         function (parameters , response) {
             var userEntry = 'SELECT * FROM Users WHERE id = ' +  parameters.usersid;
             
-            base.dbSelect(userEntry, response)
+            base.dbTransaction('dbSelect', null, userEntry, null, response)
     }
 } 
