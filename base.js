@@ -8,6 +8,7 @@ var pw = '0910111214';
 var db = 'assemble';
 
 var dbQueue = [];
+var dbAccess = true;
 
 //info should be pulled from a file
 var connectionString = 'mysql://' + userName + ':' + pw + '@' + ipAddress + ':' + dbPort + '/' + db;
@@ -23,13 +24,12 @@ exports.dbQueueAdd = function (data, response) {
     var queueItem = new QueueItem(data, response);
     dbQueue.push(queueItem);
 
-    console.log('dbQueue.length: ' + dbQueue.length);
-    if(dbQueue.length === 1) {
-        exports.dbQueueCheck();        
+    if(dbAccess) {
+        dbQueueCheck();        
     }
 }
 
-exports.dbQueueCheck = function () {
+function dbQueueCheck() {
     if(dbQueue.length > 0) {
         var queueItem = dbQueue[0];
         dbQueue.splice(0, 1);
@@ -38,13 +38,9 @@ exports.dbQueueCheck = function () {
         var response = queueItem.response;
 
         dbTransaction(data.cmdType, data.table, data.selectStmt, data.entry, response);
-        console.log('dbQueue.length: ' + dbQueue.length);
     }
 }
 
-
-
-//exports.dbCommands = {
 dbCommands = {
     dbSelect: 
         function (table, selectStmt, value) {
@@ -74,7 +70,7 @@ dbCommands = {
 
 function dbTransaction(transaction, table, selectStmt, value, response) {
     //connect to db
-    exports.dbConnect();
+    dbConnect();
 
     connection.connect(function(err) {
         if(err) {
@@ -85,15 +81,15 @@ function dbTransaction(transaction, table, selectStmt, value, response) {
             var query = connection.query(queryString, value, function(err, result){
                 if(err) {
                     console.log(exports.getCurrentTime() + transaction + ' failed');
-                    exports.dbDisconnect();   
 
                     handleReturn(response, transaction, 'failed', null);
                 } else {
                     console.log(exports.getCurrentTime() + transaction + ' successful');
-                    exports.dbDisconnect();   
-        
+
                     handleReturn(response, transaction, 'successful', result);
                 }
+                dbDisconnect();   
+                dbQueueCheck();
             });
         }
     });
@@ -113,14 +109,17 @@ function handleReturn(response, returnType, cmdStatus) {
     response.end();
 }
 
-exports.dbConnect = function () {
+function dbConnect() {
     connection = mysql.createConnection(connectionString);
+    dbAccess = false;
 }
 
-exports.dbDisconnect = function () {
+function dbDisconnect() {
     //close connection to db
     connection.end(function(err){
-        // Do something after the connection is gracefully terminated.
+        if(dbQueue.length === 0) {
+            dbAccess = true;
+        }
     });
 }
 

@@ -89,7 +89,7 @@ function runClient() {
     send(updateUserParameters);                                                
     send(updateEventParameters);                                                
     send(addEventParameters);                                                
-    send(addScheduleParameters);                                               
+    //send(addScheduleParameters);                                               
     send(addUserParameters);
     send(viewEventParameters);
     send(viewScheduleParameters);                                                
@@ -113,5 +113,7 @@ function send(msgParameters) {
 }
 
 function handleData(response) {
-    document.getElementById('return').innerHTML += response + '\n';
+    var msgType = JSON.parse(response).msgType;
+    var status = JSON.parse(response).status;
+    document.getElementById('return').innerHTML += msgType + ': ' + status + '\n';
 }
