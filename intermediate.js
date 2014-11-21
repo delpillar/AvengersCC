@@ -15,7 +15,7 @@ exports.assemble = {
             entry: scheduleEntry
         };
             
-            base.dbQueueAdd(transactionData, response);
+        base.dbQueueAdd(transactionData, response);
     },
     addEvent: function (parameters, response) {
         var eventEntry = {
@@ -134,23 +134,6 @@ exports.assemble = {
         };
         
         base.dbQueueAdd(transactionData, response);
-    },
-
-    updateUser: function (parameters, response) {
-        var userEntry = [
-        {
-            name: parameters.username,
-            password: parameters.password,
-            email: parameters.email,
-            default_availability: JSON.stringify(parameters.defaultAvailability),
-            token: parameters.token
-        },
-        {
-            id: parameters.usersid
-        }
-        ];
-
-        base.dbUpdate('users', userEntry, response);
     },
 
     viewSchedule: function (parameters, response) {
