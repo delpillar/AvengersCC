@@ -17,7 +17,7 @@ function runClient() {
     var addScheduleParameters = { 
                                     msgType: 'addSchedule', 
                                     usersid: '1',
-                                    eventsid: '3', 
+                                    eventsid: '1', 
                                     availability: [ { start: currentTime, end: currentTime },
                                                     { start: currentTime, end: currentTime } ] 
                             };
@@ -85,12 +85,12 @@ function runClient() {
                                 usersid: '1' 
                             };
     
-    //send(updateScheduleParameters);                                                
-    //send(updateUserParameters);                                                
-    //send(updateEventParameters);                                                
-    //send(addEventParameters);                                                
-    //send(addScheduleParameters);                                               
-    //send(addUserParameters);
+    send(updateScheduleParameters);                                                
+    send(updateUserParameters);                                                
+    send(updateEventParameters);                                                
+    send(addEventParameters);                                                
+    send(addScheduleParameters);                                               
+    send(addUserParameters);
     send(viewEventParameters);
     send(viewScheduleParameters);                                                
     send(viewUserParameters);

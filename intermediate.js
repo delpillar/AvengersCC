@@ -8,8 +8,15 @@ exports.assemble = {
                                     Users_id: parameters.usersid, 
                                     Events_id: parameters.eventsid
                                 };
+
+            var transactionData = {
+                                    cmdType: 'dbInsert',
+                                    table: 'userevents',
+                                    selectStmt: 'null',
+                                    entry: scheduleEntry
+                                };
             
-            base.dbTransaction('dbInsert', 'userevents', null, scheduleEntry, response);
+            base.dbQueueAdd(transactionData, response);
         },
 
     addEvent:
@@ -21,7 +28,14 @@ exports.assemble = {
                                 description: parameters.eventDescription
                             };
 
-            base.dbTransaction('dbInsert', 'events', null, eventEntry, response);
+            var transactionData = {
+                                    cmdType: 'dbInsert',
+                                    table: 'events',
+                                    selectStmt: 'null',
+                                    entry: eventEntry
+                                };
+
+            base.dbQueueAdd(transactionData, response);
         },
     
     addUser: //call function to add new users to database
@@ -32,8 +46,15 @@ exports.assemble = {
                                 email: parameters.userEmail,
                                 default_availability: JSON.stringify(parameters.availability)
                             };
+
+            var transactionData = {
+                                    cmdType: 'dbInsert',
+                                    table: 'users',
+                                    selectStmt: 'null',
+                                    entry: userEntry
+                                };
             
-            base.dbTransaction('dbInsert', 'users', null, userEntry, response);
+            base.dbQueueAdd(transactionData, response);
         },
     
     updateSchedule:
@@ -43,11 +64,19 @@ exports.assemble = {
                                 },
                                 { 
                                     Users_id: parameters.usersid,
-                                },{
+                                },
+                                {
                                     Events_id: parameters.eventsid
                                 } ];
 
-            base.dbTransaction('dbUpdate', 'userevents', null, scheduleEntry, response);
+            var transactionData = {
+                                    cmdType: 'dbUpdate',
+                                    table: 'userevents',
+                                    selectStmt: 'null',
+                                    entry: scheduleEntry
+                                };
+
+            base.dbQueueAdd(transactionData, response);
         },    
 
     updateUser:
@@ -63,7 +92,14 @@ exports.assemble = {
                                 id: parameters.usersid
                             } ];
 
-            base.dbTransaction('dbUpdate', 'users', null, userEntry, response);
+            var transactionData = {
+                                    cmdType: 'dbUpdate',
+                                    table: 'users',
+                                    selectStmt: 'null',
+                                    entry: userEntry
+                                };
+
+            base.dbQueueAdd(transactionData, response);
         },
 
     updateEvent:
@@ -78,27 +114,56 @@ exports.assemble = {
                                 id: parameters.eventsid
                             } ];
 
-            base.dbTransaction('dbUpdate', 'events', null, eventEntry, response);
+            var transactionData = {
+                                    cmdType: 'dbUpdate',
+                                    table: 'events',
+                                    selectStmt: 'null',
+                                    entry: eventEntry
+                                };
+
+            base.dbQueueAdd(transactionData, response);
         },
     
     viewEvent: // View all the schedules in an appointed event
         function (parameters, response) {
             var eventEntry = 'SELECT * FROM Events WHERE id = ' + parameters.eventsid;
+
+            var transactionData = {
+                                    cmdType: 'dbSelect',
+                                    table: null,
+                                    selectStmt: eventEntry,
+                                    entry: null
+                                };
+
             
-            base.dbTransaction('dbSelect', null, eventEntry, null, response);
+            base.dbQueueAdd(transactionData, response);
         },
     
     viewSchedule:
         function (parameters, response) {
             var scheduleEntry = 'SELECT * FROM userevents WHERE users_id = ' + parameters.usersid + ' AND events_id= ' + parameters.eventsid;
 
-            base.dbTransaction('dbSelect', null, scheduleEntry, null,  response);
+            var transactionData = {
+                                    cmdType: 'dbSelect',
+                                    table: null,
+                                    selectStmt: scheduleEntry,
+                                    entry: null
+                                };
+
+            base.dbQueueAdd(transactionData, response);
         },
     
     viewUser: // call function to view user all information
         function (parameters , response) {
             var userEntry = 'SELECT * FROM Users WHERE id = ' +  parameters.usersid;
+
+            var transactionData = {
+                                    cmdType: 'dbSelect',
+                                    table: null,
+                                    selectStmt: userEntry,
+                                    entry: null
+                                };
             
-            base.dbTransaction('dbSelect', null, userEntry, null, response)
+            base.dbQueueAdd(transactionData, response);
     }
 } 

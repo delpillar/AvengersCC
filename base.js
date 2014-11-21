@@ -13,6 +13,37 @@ var dbQueue = [];
 var connectionString = 'mysql://' + userName + ':' + pw + '@' + ipAddress + ':' + dbPort + '/' + db;
 var connection;
 
+function QueueItem(newData, newResponse) {
+    this.dbData = newData;
+    this.response = newResponse;
+}
+
+
+exports.dbQueueAdd = function (data, response) {
+    var queueItem = new QueueItem(data, response);
+    dbQueue.push(queueItem);
+
+    console.log('dbQueue.length: ' + dbQueue.length);
+    if(dbQueue.length === 1) {
+        exports.dbQueueCheck();        
+    }
+}
+
+exports.dbQueueCheck = function () {
+    if(dbQueue.length > 0) {
+        var queueItem = dbQueue[0];
+        dbQueue.splice(0, 1);
+
+        var data = queueItem.dbData;
+        var response = queueItem.response;
+
+        dbTransaction(data.cmdType, data.table, data.selectStmt, data.entry, response);
+        console.log('dbQueue.length: ' + dbQueue.length);
+    }
+}
+
+
+
 //exports.dbCommands = {
 dbCommands = {
     dbSelect: 
@@ -41,7 +72,7 @@ dbCommands = {
     }
 }
 
-exports.dbTransaction = function (transaction, table, selectStmt, value, response) {
+function dbTransaction(transaction, table, selectStmt, value, response) {
     //connect to db
     exports.dbConnect();
 
@@ -53,18 +84,17 @@ exports.dbTransaction = function (transaction, table, selectStmt, value, respons
             var queryString = dbCommands[transaction](table, selectStmt, value);
             var query = connection.query(queryString, value, function(err, result){
                 if(err) {
-                    console.log(exports.getCurrentTime() + 'Failed to query db');
+                    console.log(exports.getCurrentTime() + transaction + ' failed');
                     exports.dbDisconnect();   
 
                     handleReturn(response, transaction, 'failed', null);
                 } else {
-                    console.log(query.sql); 
+                    console.log(exports.getCurrentTime() + transaction + ' successful');
                     exports.dbDisconnect();   
         
                     handleReturn(response, transaction, 'successful', result);
                 }
             });
-
         }
     });
 }
