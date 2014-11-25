@@ -37,7 +37,7 @@ function dbQueueCheck() {
         var data = queueItem.dbData;
         var response = queueItem.response;
 
-        dbTransaction(data.cmdType, data.table, data.selectStmt, data.entry, response);
+        dbTransaction(data.msgType, data.cmdType, data.table, data.selectStmt, data.entry, response);
     }
 }
 
@@ -68,7 +68,7 @@ dbCommands = {
     }
 }
 
-function dbTransaction(transaction, table, selectStmt, value, response) {
+function dbTransaction(msgType, transaction, table, selectStmt, value, response) {
     //connect to db
     dbConnect();
 
@@ -79,15 +79,19 @@ function dbTransaction(transaction, table, selectStmt, value, response) {
             console.log(exports.getCurrentTime() + 'Connected to db');
             var queryString = dbCommands[transaction](table, selectStmt, value);
             var query = connection.query(queryString, value, function(err, result){
+                var results;
+                var status;
                 if(err) {
                     console.log(exports.getCurrentTime() + transaction + ' failed');
-
-                    handleReturn(response, transaction, 'failed', null);
+                    results = null;
+                    status = 'failed';
+                    //handleReturn(returnMsgType, response, transaction, 'failed', null);
                 } else {
                     console.log(exports.getCurrentTime() + transaction + ' successful');
-
-                    handleReturn(response, transaction, 'successful', result);
+                    results = result;
+                    status = 'successful';
                 }
+                handleReturn(response, msgType, status, results);
                 dbDisconnect();   
                 dbQueueCheck();
             });
@@ -95,11 +99,11 @@ function dbTransaction(transaction, table, selectStmt, value, response) {
     });
 }
 
-function handleReturn(response, returnType, cmdStatus) {
+function handleReturn(response, returnMsgType, cmdStatus) {
     var responseText;
 
     responseText = JSON.stringify({ 
-                                    msgType: returnType, 
+                                    msgType: returnMsgType, 
                                     data: arguments[3],
                                     status: cmdStatus 
                                 });   

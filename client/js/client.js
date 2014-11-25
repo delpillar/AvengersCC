@@ -1,8 +1,5 @@
 //these are placeholder values for initial testing purposes
-
 var ip = '127.0.0.1';
-var port = '8000';
-var address = ip + ':' + port;
 
 var oneDay = 86400;
 
@@ -114,7 +111,7 @@ function send(msgParameters) {
         }
     };
 
-    sendRequest.open('POST', address, true);
+    sendRequest.open('POST', ip, true);
     sendRequest.send(JSON.stringify(msgParameters));
 }
 

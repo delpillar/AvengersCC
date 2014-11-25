@@ -9,6 +9,7 @@ exports.assemble = {
         };
 
         var transactionData = {
+            msgType: parameters.msgType,
             cmdType: 'dbInsert',
             table: 'userevents',
             selectStmt: 'null',
@@ -26,6 +27,7 @@ exports.assemble = {
         };
 
         var transactionData = {
+            msgType: parameters.msgType,
             cmdType: 'dbInsert',
             table: 'events',
             selectStmt: 'null',
@@ -44,6 +46,7 @@ exports.assemble = {
         };
 
         var transactionData = {
+            msgType: parameters.msgType,
             cmdType: 'dbInsert',
             table: 'users',
             selectStmt: 'null',
@@ -67,6 +70,7 @@ exports.assemble = {
         ];
 
         var transactionData = {
+            msgType: parameters.msgType,
             cmdType: 'dbUpdate',
             table: 'userevents',
             selectStmt: 'null',
@@ -91,6 +95,7 @@ exports.assemble = {
         ];
 
         var transactionData = {
+            msgType: parameters.msgType,
             cmdType: 'dbUpdate',
             table: 'users',
             selectStmt: 'null',
@@ -114,6 +119,7 @@ exports.assemble = {
         ];
 
         var transactionData = {
+            msgType: parameters.msgType,
             cmdType: 'dbUpdate',
             table: 'events',
             selectStmt: 'null',
@@ -127,6 +133,7 @@ exports.assemble = {
         var eventEntry = 'SELECT * FROM Events WHERE id = ' + parameters.eventsid;
 
         var transactionData = {
+            msgType: parameters.msgType,
             cmdType: 'dbSelect',
             table: null,
             selectStmt: eventEntry,
@@ -140,6 +147,7 @@ exports.assemble = {
         var scheduleEntry = 'SELECT * FROM userevents WHERE users_id = ' + parameters.usersid + ' AND events_id= ' + parameters.eventsid;
 
         var transactionData = {
+            msgType: parameters.msgType,
             cmdType: 'dbSelect',
             table: null,
             selectStmt: scheduleEntry,
@@ -153,6 +161,7 @@ exports.assemble = {
         var eventEntry = 'SELECT * FROM Events WHERE id = ' + parameters.eventsid;
 
         var transactionData = {
+            msgType: parameters.msgType,
             cmdType: 'dbSelect',
             table: null,
             selectStmt: eventEntry,
@@ -166,6 +175,7 @@ exports.assemble = {
         var userEntry = 'SELECT * FROM Users WHERE id = ' +  parameters.usersid;
 
         var transactionData = {
+            msgType: parameters.msgType,
             cmdType: 'dbSelect',
             table: null,
             selectStmt: userEntry,
