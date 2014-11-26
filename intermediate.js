@@ -2,15 +2,22 @@ var base = require('./base.js');
 
 exports.assemble = {
     addSchedule: function (parameters, response) {
-        var scheduleEntry = {
+        var scheduleEntry = { 
             availability: JSON.stringify(parameters.availability),
-            Users_id: parameters.usersid,
+            Users_id: parameters.usersid, 
             Events_id: parameters.eventsid
         };
 
-        base.dbInsert('userevents', scheduleEntry, response);
+        var transactionData = {
+            msgType: parameters.msgType,
+            cmdType: 'dbInsert',
+            table: 'userevents',
+            selectStmt: 'null',
+            entry: scheduleEntry
+        };
+            
+        base.dbQueueAdd(transactionData, response);
     },
-
     addEvent: function (parameters, response) {
         var eventEntry = {
             name: parameters.eventName,
@@ -19,10 +26,17 @@ exports.assemble = {
             description: parameters.eventDescription
         };
 
-        base.dbInsert('events', eventEntry, response);
-    },
+        var transactionData = {
+            msgType: parameters.msgType,
+            cmdType: 'dbInsert',
+            table: 'events',
+            selectStmt: 'null',
+            entry: eventEntry
+        };
 
-    // call function to add new users database
+        base.dbQueueAdd(transactionData, response);
+    },
+    
     addUser: function(parameters, response) {
         var userEntry = {
             name: parameters.userName,
@@ -30,75 +44,144 @@ exports.assemble = {
             email: parameters.userEmail,
             default_availability: JSON.stringify(parameters.availability)
         };
-        base.dbInsert('users',userEntry,response);
-    },
 
+        var transactionData = {
+            msgType: parameters.msgType,
+            cmdType: 'dbInsert',
+            table: 'users',
+            selectStmt: 'null',
+            entry: userEntry
+        };
+        
+        base.dbQueueAdd(transactionData, response);
+    },
+    
     updateSchedule: function (parameters, response) {
-        var scheduleEntry = [
-        {
+        var scheduleEntry = [ 
+        { 
             availability: JSON.stringify(parameters.availability)
         },
-        {
+        { 
             Users_id: parameters.usersid,
         },
         {
             Events_id: parameters.eventsid
-        }
+        } 
         ];
 
-        base.dbUpdate('userevents', scheduleEntry, response);
-    },
+        var transactionData = {
+            msgType: parameters.msgType,
+            cmdType: 'dbUpdate',
+            table: 'userevents',
+            selectStmt: 'null',
+            entry: scheduleEntry
+        };
+
+        base.dbQueueAdd(transactionData, response);
+    },    
 
     updateUser: function (parameters, response) {
-        var userEntry = [
-        {
+        var userEntry = [ 
+        { 
             name: parameters.username,
-            password: parameters.password,
+            password: parameters.password, 
             email: parameters.email,
             default_availability: JSON.stringify(parameters.defaultAvailability),
             token: parameters.token
         },
-        {
+        { 
             id: parameters.usersid
-        }
+        } 
         ];
 
-        base.dbUpdate('users', userEntry, response);
+        var transactionData = {
+            msgType: parameters.msgType,
+            cmdType: 'dbUpdate',
+            table: 'users',
+            selectStmt: 'null',
+            entry: userEntry
+        };
+
+        base.dbQueueAdd(transactionData, response);
     },
 
     updateEvent: function (parameters, response) {
-        var eventEntry = [
-        {
+        var eventEntry = [ 
+        { 
             name: parameters.eventName,
-            start_date: parameters.eventStartDate,
+            start_date: parameters.eventStartDate, 
             end_date: parameters.eventEndDate,
             description: parameters.eventDescription
         },
-        {
+        { 
             id: parameters.eventsid
-        }
+        } 
         ];
 
-        base.dbUpdate('events', eventEntry, response);
+        var transactionData = {
+            msgType: parameters.msgType,
+            cmdType: 'dbUpdate',
+            table: 'events',
+            selectStmt: 'null',
+            entry: eventEntry
+        };
+
+        base.dbQueueAdd(transactionData, response);
     },
 
-    // View all the schedules in an appointed event
     viewEvent: function (parameters, response) {
         var eventEntry = 'SELECT * FROM Events WHERE id = ' + parameters.eventsid;
 
-        base.dbSelect(eventEntry, response);
+        var transactionData = {
+            msgType: parameters.msgType,
+            cmdType: 'dbSelect',
+            table: null,
+            selectStmt: eventEntry,
+            entry: null
+        };
+        
+        base.dbQueueAdd(transactionData, response);
     },
 
     viewSchedule: function (parameters, response) {
         var scheduleEntry = 'SELECT * FROM userevents WHERE users_id = ' + parameters.usersid + ' AND events_id= ' + parameters.eventsid;
 
-        base.dbSelect(scheduleEntry, response);
+        var transactionData = {
+            msgType: parameters.msgType,
+            cmdType: 'dbSelect',
+            table: null,
+            selectStmt: scheduleEntry,
+            entry: null
+        };
+
+        base.dbQueueAdd(transactionData, response);
+    },
+    
+    viewEvent: function (parameters, response) {
+        var eventEntry = 'SELECT * FROM Events WHERE id = ' + parameters.eventsid;
+
+        var transactionData = {
+            msgType: parameters.msgType,
+            cmdType: 'dbSelect',
+            table: null,
+            selectStmt: eventEntry,
+            entry: null
+        };
+        
+        base.dbQueueAdd(transactionData, response);
     },
 
-    // call function to view user all information
     viewUser: function (parameters , response) {
         var userEntry = 'SELECT * FROM Users WHERE id = ' +  parameters.usersid;
 
-        base.dbSelect(userEntry, response)
+        var transactionData = {
+            msgType: parameters.msgType,
+            cmdType: 'dbSelect',
+            table: null,
+            selectStmt: userEntry,
+            entry: null
+        };
+        
+        base.dbQueueAdd(transactionData, response);
     }
 }

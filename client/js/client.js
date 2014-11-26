@@ -1,8 +1,5 @@
 //these are placeholder values for initial testing purposes
-
 var ip = '127.0.0.1';
-var port = '8000';
-var address = ip + ':' + port;
 
 var oneDay = 86400;
 
@@ -44,7 +41,6 @@ function runClient() {
         {start: currentTime, end: tomorrow}
         ]
     };
-
 
     var updateScheduleParameters = {
         msgType: 'updateSchedule',
@@ -91,16 +87,16 @@ function runClient() {
         msgType: 'viewUser',
         usersid: '1'
     };
-
-    //send(viewUserParameters);
-    //send(updateScheduleParameters);
-    //send(updateUserParameters);
-    //send(updateEventParameters);
-    //send(addEventParameters);
-    //send(addScheduleParameters);
-    //send(addUserParameters);
-    //send(viewEventParameters);
-    //send(viewScheduleParameters);
+    
+    send(updateScheduleParameters);                                                
+    send(updateUserParameters);                                                
+    send(updateEventParameters);                                                
+    send(addEventParameters);                                                
+    send(addScheduleParameters);                                               
+    send(addUserParameters);
+    send(viewEventParameters);
+    send(viewScheduleParameters);                                                
+    send(viewUserParameters);
 }
 
 function send(msgParameters) {
@@ -115,10 +111,12 @@ function send(msgParameters) {
         }
     };
 
-    sendRequest.open('POST', address, true);
+    sendRequest.open('POST', ip, true);
     sendRequest.send(JSON.stringify(msgParameters));
 }
 
 function handleData(response) {
-    document.getElementById('return').innerHTML = response;
+    var msgType = JSON.parse(response).msgType;
+    var status = JSON.parse(response).status;
+    document.getElementById('return').innerHTML += msgType + ': ' + status + '\n';
 }

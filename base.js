@@ -7,148 +7,124 @@ var userName = 'root';
 var pw = '0910111214';
 var db = 'assemble';
 
+var dbQueue = [];
+var dbAccess = true;
+
 //info should be pulled from a file
 var connectionString = 'mysql://' + userName + ':' + pw + '@' + ipAddress + ':' + dbPort + '/' + db;
 var connection;
 
-exports.dbConnect = function () {
-    connection = mysql.createConnection(connectionString);
+function QueueItem(newData, newResponse) {
+    this.dbData = newData;
+    this.response = newResponse;
 }
 
-exports.dbDisconnect = function () {
-    //close connection to db
-    connection.end(function(err){
-        // Do something after the connection is gracefully terminated.
-    });
+
+exports.dbQueueAdd = function (data, response) {
+    var queueItem = new QueueItem(data, response);
+    dbQueue.push(queueItem);
+
+    if(dbAccess) {
+        dbQueueCheck();        
+    }
 }
 
-//var updateItem = [ { number: newNumber }, { idTest: currentId } ];
-//dbUpdate('test', updateItem);
-exports.dbUpdate = function (table, value, response) {
-    //connect to db
-    exports.dbConnect();
+function dbQueueCheck() {
+    if(dbQueue.length > 0) {
+        var queueItem = dbQueue[0];
+        dbQueue.splice(0, 1);
 
-    connection.connect(function(err) {
-        if(err) {
-            console.log(exports.getCurrentTime() + 'Failed to connect to db');
-        } else { 
-            console.log(exports.getCurrentTime() + 'Connected to db');
+        var data = queueItem.dbData;
+        var response = queueItem.response;
 
+        dbTransaction(data.msgType, data.cmdType, data.table, data.selectStmt, data.entry, response);
+    }
+}
+
+dbCommands = {
+    dbSelect: 
+        function (table, selectStmt, value) {
+            return selectStmt;
+    },
+    dbUpdate: 
+        function (table, selectStmt, value) {
             var queryString = 'UPDATE ' + table + ' SET ? WHERE ?';
             if(value.length === 3) {
                 queryString = queryString + ' AND ?';
             }
-            
-            var query = connection.query(queryString, value, function(err, result) {
-                if(err) {
-                    console.log(exports.getCurrentTime() + 'Failed to update value in db');
-                } else {  
-                    console.log(query.sql); 
-                }
-                handleReturn(response, 'update');
-            });
-            exports.dbDisconnect();   
-        }
-    });
-}
-
-//var deleteEntry  = { idTest:  currentId};
-//dbDelete('test', deleteEntry);
-exports.dbDelete = function (table, value, response) {
-    //connect to db
-    exports.dbConnect();
-
-    connection.connect(function(err) {
-        if(err) {
-            console.log(exports.getCurrentTime() + 'Failed to connect to db');
-        } else { 
-            console.log(exports.getCurrentTime() + 'Connected to db');
+            return queryString;
+    },
+    dbInsert: 
+        function (table, selectStmt, value) {
+            return 'INSERT INTO ' + table + ' SET ?';
+    },
+    dbDelete:
+        function (table, selectStmt, value) {
             var queryString = 'DELETE FROM ' + table + ' WHERE ?';
-            var query = connection.query(queryString, value, function(err, result) {
-                if(err) {
-                    console.log(exports.getCurrentTime() + 'Failed to delete value from db');
-                } else {  
-                    console.log(query.sql); 
-                }
-                handleReturn(response, 'delete');
-            });
-            exports.dbDisconnect();   
-        }
-    });
+            if(value.length === 3) {
+                queryString = queryString + ' AND ?';
+            }
+            return queryString;
+    }
 }
 
-//var testResult  = { number: diceRoll };
-//var tempEntry  = { idTest: currentId, number: diceRoll };
-//dbInsert('test', tempEntry, response);
-exports.dbInsert = function (table, value, response) {
+function dbTransaction(msgType, transaction, table, selectStmt, value, response) {
     //connect to db
-    exports.dbConnect();
+    dbConnect();
 
     connection.connect(function(err) {
         if(err) {
             console.log(exports.getCurrentTime() + 'Failed to connect to db');
         } else { 
             console.log(exports.getCurrentTime() + 'Connected to db');
-            var queryString = 'INSERT INTO ' + table + ' SET ?';
-            var query = connection.query(queryString, value, function(err, result) {
+            var queryString = dbCommands[transaction](table, selectStmt, value);
+            var query = connection.query(queryString, value, function(err, result){
+                var results;
+                var status;
                 if(err) {
-                    console.log(exports.getCurrentTime() + 'Failed to add value to db');
-                } else {  
-                    console.log(query.sql); 
-                }
-                handleReturn(response, 'insert');
-            });
-            exports.dbDisconnect();   
-        }
-    });
-}
-
-//dbSelect('test'); 
-exports.dbSelect = function (queryString, response) {
-    //connect to db
-    exports.dbConnect();
-
-    connection.connect(function(err) {
-        if(err) {
-            console.log(exports.getCurrentTime() + 'Failed to connect to db');
-        } else { 
-            console.log(exports.getCurrentTime() + 'Connected to db');
-            var query = connection.query(queryString, function(err, rows){
-
-                if(err) {
-                    console.log(exports.getCurrentTime() + 'Failed to query db');
-                    console.log(query.sql); 
+                    console.log(exports.getCurrentTime() + transaction + ' failed');
+                    results = null;
+                    status = 'failed';
+                    //handleReturn(returnMsgType, response, transaction, 'failed', null);
                 } else {
-                    console.log(query.sql); 
-                    exports.dbDisconnect();   
-        
-                    handleReturn(response, 'select', rows);
+                    console.log(exports.getCurrentTime() + transaction + ' successful');
+                    results = result;
+                    status = 'successful';
                 }
+                handleReturn(response, msgType, status, results);
+                dbDisconnect();   
+                dbQueueCheck();
             });
-
         }
     });
 }
 
-function handleReturn(response, returnType) {
+function handleReturn(response, returnMsgType, cmdStatus) {
     var responseText;
 
-    if(arguments.length < 3) {
-        responseText = JSON.stringify({ 
-                                        msgType: returnType, 
-                                        status: 'complete' 
-                                    });   
-    } else {
-        responseText = JSON.stringify({ 
-                                        msgType: returnType, 
-                                        data: arguments[2],
-                                        status: 'complete' 
-                                    });   
-    }
+    responseText = JSON.stringify({ 
+                                    msgType: returnMsgType, 
+                                    data: arguments[3],
+                                    status: cmdStatus 
+                                });   
 
     response.writeHead(200, { 'content-type': 'text/plain' });
     response.write(responseText);
     response.end();
+}
+
+function dbConnect() {
+    connection = mysql.createConnection(connectionString);
+    dbAccess = false;
+}
+
+function dbDisconnect() {
+    //close connection to db
+    connection.end(function(err){
+        if(dbQueue.length === 0) {
+            dbAccess = true;
+        }
+    });
 }
 
 exports.getCurrentTime = function () {
