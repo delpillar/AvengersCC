@@ -51,7 +51,7 @@ function runClient() {
         { start: currentTime, end: tomorrow }
         ]
     };
-    
+
     var updateUserParameters = {
         msgType: 'updateUser',
         username: 'kevp',
